@@ -1,0 +1,107 @@
+Gene;Locus;Ref;Family
+AtGSTF2;T10P11.18;NM_116486;Phi family
+AtGSTF2;AT4g02520;;Phi family
+AtGSTF3;T17M13.10;NM_126346;Phi family
+AtGSTF3;At2g02930;;Phi family
+AtGSTF4;F22D16.5;NM_179250;Phi family
+AtGSTF4;AT1g02950;;Phi family
+AtGSTF5;F22D16.6;NM_100175;Phi family
+AtGSTF5;AT1g02940;;Phi family
+AtGSTF6;F22D16.7;AY097392;Phi family
+AtGSTF6;AT1g02930;;Phi family
+AtGSTF7;F22D16.8;AY093281;Phi family
+AtGSTF7;AT1g02920;;Phi family
+AtGSTF8;F17A22.12;NM_180148;Phi family
+AtGSTF8;AT2g47730;;Phi family
+AtGSTF9;F7F1.7;AF372905;Phi family
+AtGSTF9;AT2g30860;;Phi family
+AtGSTF10;F7F1.8;AY128398;Phi family
+AtGSTF10;AT2g30870;;Phi family
+AtGSTF11;T17B22.12;AY099776;Phi family
+AtGSTF11;AT3g03190;;Phi family
+AtGSTF12;MKP11.7;AF288189;Phi family
+AtGSTF12;AT5g17220;;Phi family
+AtGSTF13;F26K9.190;NM_116141;Phi family
+AtGSTF13;AT3g62760;;Phi family
+AtGSTF14;F10F5.9;NM_103873;Phi family
+AtGSTF14;AT1g49860;;Phi family
+AtGSTU1;F16P2.13;AF428387;Tau family
+AtGSTU1;AT2g29490;;Tau family
+AtGSTU2;F16P2.14;AY094455;Tau family
+AtGSTU2;AT2g29480;;Tau family
+AtGSTU3;F16P2.15;AK117612;Tau family
+AtGSTU3;AT2g29470;;Tau family
+AtGSTU4;F16P2.16;AF387004;Tau family
+AtGSTU4;AT2g29460;;Tau family
+AtGSTU5;F16P2.17;AY088413;Tau family
+AtGSTU5;AT2g29450;;Tau family
+AtGSTU6;F16P2.18;AF288187;Tau family
+AtGSTU6;AT2g29440;;Tau family
+AtGSTU7;F16P2.20;AY086358;Tau family
+AtGSTU7;AT2g29420;;Tau family
+AtGSTU8;F3L24.14;AY086116;Tau family
+AtGSTU8;AT3g09270;;Tau family
+AtGSTU9;K19B1.9;AF288179;Tau family
+AtGSTU9;AT5g62480;;Tau family
+AtGSTU10;F1M20.27;AY088052;Tau family
+AtGSTU10;AT1g74590;;Tau family
+AtGSTU11;T17F3.4;AK119143;Tau family
+AtGSTU11;AT1g69930;;Tau family
+AtGSTU12;T17F3.5;BT010687;Tau family
+AtGSTU12;AT1g69920;;Tau family
+AtGSTU13;T7N9.190;AY050343;Tau family
+AtGSTU13;AT1g27130;;Tau family
+AtGSTU14;T7N9.20;AF288178;Tau family
+AtGSTU14;AT1g27140;;Tau family
+AtGSTU15;T30E16.25;AY084992;Tau family
+AtGSTU15;AT1g59670;;Tau family
+AtGSTU16;T30E16.30;AF370480;Tau family
+AtGSTU16;AT1g59700;;Tau family
+AtGSTU17;F14N23.25;NM_100911;Tau family
+AtGSTU17;AT1g10370;;Tau family
+AtGSTU18;F14N23.24;NM_100910;Tau family
+AtGSTU18;AT1g10360;;Tau family
+AtGSTU19;F3F9.11;AY087032;Tau family
+AtGSTU19;AT1g78380;;Tau family
+AtGSTU20;F3F9.23;AY087026;Tau family
+AtGSTU20;AT1g78370;;Tau family
+AtGSTU21;F3F9.24;NM_106483;Tau family
+AtGSTU21;AT1g78360;;Tau family
+AtGSTU22;F3F9.13;AY086469;Tau family
+AtGSTU22;AT1g78340;;Tau family
+AtGSTU23;F3F9.14;AY085813;Tau family
+AtGSTU23;AT1g78320;;Tau family
+AtGSTU24;F20D23.13;BT012184;Tau family
+AtGSTU24;AT1g17170;;Tau family
+AtGSTU25;F20D23.12;AK118907;Tau family
+AtGSTU25;AT1g17180;;Tau family
+AtGSTU26;F20D23.11;AJ306688;Tau family
+AtGSTU26;AT1g17190;;Tau family
+AtGSTU27;T28A8.90;AF370274;Tau family
+AtGSTU27;AT3g43800;;Tau family
+AtGSTU28;F22G10.22;NM_104246;Tau family
+AtGSTU28;AT1g53680;;Tau family
+AtGSTZ1;T16F16.18;AY052332;Zeta family
+AtGSTZ1;AT2g02390;;Zeta family
+AtGSTZ2;T16F16.17;NM_126295;Zeta family
+AtGSTZ2;AT2g02380;;Zeta family
+AtGSTT1;MEE6.28;AY054659;Theta family
+AtGSTT1;AT5g41210;;Theta family
+AtGSTT2;K1O13.3;AJ132398;Theta family
+AtGSTT2;AT5g41240;;Theta family
+AtGSTL1;F9G14.90;NM_120356;Lambda family
+AtGSTL1;AT5g02780;;Lambda family
+AtGSTL2;T15C9.60;NM_115362;Lambda family
+AtGSTL2;AT3g55040;;Lambda family
+AtGSTL3;F9G14.100;AY085126;Lambda family
+AtGSTL3;AT5g02790;;Lambda family
+AtDHAR1;F14P1.9;AY039590;Dehydroascorbate reductase family
+AtDHAR1;AT1g19570;;Dehydroascorbate reductase family
+AtDHAR2;F22H5.1;AY087460;Dehydroascorbate reductase family
+AtDHAR2;AT1g75270;;Dehydroascorbate reductase family
+AtDHAR3;F5E19.50;AY065124;Dehydroascorbate reductase family
+AtDHAR3;AT5g16710;;Dehydroascorbate reductase family
+AtDHAR4;T30G6.13;NM_123018;Dehydroascorbate reductase family
+AtDHAR4;AT5g36270;;Dehydroascorbate reductase family
+AtTCHQD1;T14N5.14;AY064034;Tetrachlorohydroquinone dehalogenase-like family
+AtTCHQD1;AT1g77290;;Tetrachlorohydroquinone dehalogenase-like family

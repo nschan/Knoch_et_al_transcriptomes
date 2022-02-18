@@ -1,0 +1,1699 @@
+---
+title: "Comparative Analysis of the transcriptomic Response to Allelochemicals"
+author: "Niklas Schandry"
+date: "20/08/2021"
+output: pdf_document:
+  toc: TRUE
+  
+---
+
+```{r setup, message = F}
+library(tidyverse)
+library(magrittr)
+library(patchwork)
+library(wesanderson)
+library(DESeq2)
+library(DECIPHER)
+library(phangorn)
+library(ggtree)
+```
+
+# Annotations
+
+```{r}
+# The araGenome object.
+araGenome <- biomaRt::getBM(c("ensembl_gene_id",
+                              "chromosome_name",
+                              "start_position",
+                              "end_position",
+                              "strand",
+                              "description",
+                              "transcript_biotype"),
+                            mart = biomaRt::useMart(biomart = "plants_mart",
+                                                    dataset = "athaliana_eg_gene",
+                                                    host = 'https://plants.ensembl.org'))
+
+# araGenome as a nicely formatted GRanges object
+araGenes <- araGenome %>%
+  dplyr::rename(GeneId=ensembl_gene_id) %>%
+  dplyr::mutate(strand=dplyr::case_when(strand == 1 ~ "+",
+                                        strand == -1 ~ "-"),
+                start = start_position,
+                end = end_position) %>%
+  dplyr::filter(stringr::str_detect(chromosome_name,"[1-9]")) %>%
+  dplyr::mutate(seqnames=paste0("Chr",chromosome_name)) %>%
+  plyranges::as_granges()
+
+# A table of gene info
+gene_info <- araGenes %>% as.data.frame %>% dplyr::select(GeneId, description, transcript_biotype)
+```
+
+# MomiB
+
+## Read count table
+
+```{r}
+counts_momB <- read_tsv("pub/momB_salmon.merged.gene_counts.tsv") %>% 
+  dplyr::select(-gene_name) %>% 
+  column_to_rownames("gene_id")
+```
+
+```{r}
+counts_momB <- counts_momB[rowSums(counts_momB) > 40,]
+```
+
+## Counts
+
+```{r}
+sample_dat_momB <- data.frame(SampleName=colnames(counts_momB)) %>% 
+                                      separate(SampleName, c("Treat","Time","Rep"), extra="drop", remove=F) %>% 
+                                      mutate(Time = str_extract(Time, "[0-9]+"),
+                                      Time = as.numeric(Time)) %>% 
+  mutate(Class = interaction(Treat, Time,sep="_"),
+                  SampleName = as.character(interaction(Treat, Time, Rep, sep ="_")))
+
+colnames(counts_momB) <- sample_dat_momB$SampleName
+```
+
+## PCA
+
+```{r}
+des_momB <- DESeq2::DESeqDataSetFromMatrix(counts_momB %>% as.matrix() %>% round(),
+                                                     sample_dat_momB %>% 
+                                                       dplyr::select(Treat, Time),
+                                                     ~ Treat + Time + Treat:Time)
+
+des_momB <- DESeq(des_momB, parallel = T) 
+des_momB %>% write_rds("rds/des_momB.rds")
+```
+
+```{r}
+des_momB <- read_rds("rds/des_momB.rds")
+vst_momB <- vst(des_momB)
+```
+
+```{r}
+timepoint_colors <- c("#D8B70A", "#A2A475", "#972D15", "#9986A5")
+names(timepoint_colors) <- c("0","1","6","24")
+PCA_momi <- plotPCA(vst_momB, intgroup = c("Treat","Time"),returnData = T,ntop = 1000) %>%
+  ggplot(aes(x = PC1, y=PC2, fill = as.factor(Time))) +
+  geom_point(size = 5,pch = 21) +
+  facet_grid(~Treat) +
+  scale_fill_manual(values = timepoint_colors, name = "Timepoint") +
+  theme_bw() +
+  theme(text=element_text(family = "NimbusMon", size =12),
+        strip.background = element_blank()) +
+  labs(title = "PCA momilactone B Samples",
+       x = "PC1 [61%]",
+       y = "PC2 [14%]") +
+  NULL
+PCA_momi
+```
+
+## Cemitool
+
+```{r eval = F}
+set.seed(78235)
+cem_momi <- CEMiTool::cemitool(expr = counts_momB, 
+                     annot = sample_dat_momB %>% 
+                             dplyr::select(SampleName, Class), 
+                     apply_vst = T, 
+                     filter = T,
+                     cor_function = "bicor",
+                     force_beta = F,
+                     network_type = "signed")
+cem_momi %>% write_rds("rds/cem_momi.rds")
+```
+
+```{r}
+cem_momi <- read_rds("rds/cem_momi.rds")
+```
+
+## Heatmap w clusters
+
+```{r}
+des_momB <- DESeq2::DESeqDataSetFromMatrix(counts_momB %>% as.matrix() %>% round(),
+                                                     sample_dat_momB %>% 
+                                                       dplyr::select(Treat, Time) %>% 
+                                                       mutate(Treat_Time = interaction(Treat, Time, sep = "_")),
+                                                     ~ Treat_Time)
+
+des_momB <- DESeq(des_momB, parallel = T) 
+```
+
+
+```{r}
+resultsNames(des_momB)
+```
+
+```{r}
+all_momB_l2fcs <- rbind(
+      results(des_momB,c("Treat_Time","MomB_1","DMSO_0")) %>% 
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "MomB 1"),
+      results(des_momB,c("Treat_Time","MomB_6","DMSO_0")) %>% 
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "MomB 6"),
+      results(des_momB,c("Treat_Time","MomB_24","DMSO_0")) %>%
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "MomB 24"),
+      results(des_momB,c("Treat_Time","DMSO_1","DMSO_0")) %>%
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "DMSO 1"),
+      results(des_momB,c("Treat_Time","DMSO_6","DMSO_0")) %>% 
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "DMSO 6"),
+      results(des_momB,c("Treat_Time","DMSO_24","DMSO_0")) %>% 
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "DMSO 24")) %>% 
+  # Adjust to account for large number of comparisons
+  mutate(padj_global = p.adjust(pvalue,"fdr"))
+```
+
+
+```{r}
+momB_heatmap_w_clusters <- all_momB_l2fcs %>% 
+  filter(padj_global < 0.01) %>% 
+  left_join(cem_momi@module,by = c("row" = "genes")) %>% 
+  separate("Comparison",c("Treatment", "Timepoint")," ",remove=F) %>% 
+  #filter(modules != "Not.Correlated") %>% 
+  ggplot(aes(x=fct_relevel(Timepoint,c("1","6","24")), y = row)) +
+  geom_tile(aes(fill = log2FoldChange)) +
+  scale_fill_gradientn(colors = RColorBrewer::brewer.pal(11, "PRGn"), limits = c(-9,9)) +
+  facet_grid(modules~Treatment,scales="free_y") +
+  labs(y = element_blank(),
+       x = "Timepoint",
+       title = "Expression relative to T0",
+       subtitle = "filtered for globally fdr adjusted p < 0.01") +
+  theme(text = element_text(family="NimbusMon",size = 13),
+        strip.background.y = element_rect(fill = "white",color="black"),
+        strip.background.x = element_rect(fill = "white"),
+        strip.text.y = element_text(angle = 0),
+        axis.text.y = element_blank(),
+        axis.ticks.length.y = unit(0,"cm"),
+        panel.spacing.y = unit(4,"pt"),
+        panel.background = element_blank(),
+        panel.grid = element_blank()) +
+  NULL
+momB_heatmap_w_clusters
+```
+
+# APO
+
+## Data in
+
+```{r}
+read_delim("/dss/pn73so-dss-0001/users/ra34bin/rstudio-home/judit_list_tbls.tsv", delim = " ", col_names = F) %>% dplyr::select(c("X6","X12")) %>% set_colnames(c("size","name"))
+```
+
+
+```{r}
+counts_APO <- read_tsv("pub/apo_salmon.merged.gene_counts.tsv") %>% 
+              column_to_rownames("gene_id") 
+
+counts_APO <- counts_APO[rowSums(counts_APO) > 40,]
+sample_dat_APO <- data.frame(SampleName=colnames(counts_APO)) %>% 
+                                      separate("SampleName", c("Treat","Time","Rep"), "_",remove=F) %>% 
+                                      mutate(Time = as.numeric(Time)) %>% 
+  mutate(Class = interaction(Treat, Time,sep="_")) 
+```
+
+## PCA
+
+```{r}
+des_APO <- DESeq2::DESeqDataSetFromMatrix(counts_APO %>% 
+                                            as.matrix() %>%
+                                            round,
+                                                     sample_dat_APO %>% 
+                                                     mutate(Treat_Time = interaction(Treat,Time, sep ="_")),
+                                                     ~ Treat_Time)
+
+des_APO <- DESeq(des_APO, 
+                 parallel = T) 
+des_APO %>% write_rds("rds/des_APO.rds")
+```
+
+```{r}
+vst_APO <- vst(des_APO)
+```
+
+```{r}
+PCA_APO <- plotPCA(vst_APO, intgroup = c("Treat","Time","Rep"),returnData = T,ntop = 1000) %>%
+  ggplot(aes(x = PC1, y=PC2, fill = as.factor(Time))) +
+  geom_point(size = 5,pch = 21) +
+  facet_grid(~fct_relevel(Treat,c("DMSO"))) +
+  scale_fill_manual(values = timepoint_colors, name = "Timepoint") +
+  theme_bw() +
+  theme(text=element_text(family = "NimbusMon",
+                          size =12),
+        strip.background = element_blank()) +
+  labs(title = "PCA APO Samples",
+       x = "PC1 [34%]",
+       y = "PC2 [23%]") +
+  NULL
+
+PCA_APO
+```
+
+## Cemitool
+
+```{r eval = F}
+set.seed(735)
+cem_APO <- CEMiTool::cemitool(expr = counts_APO,
+                annot = sample_dat_APO %>% 
+                        dplyr::select(SampleName, Class), 
+                apply_vst = T, 
+                filter = T,
+                cor_function = "bicor",
+                force_beta = F,
+                network_type = "signed")
+cem_APO %>% write_rds("rds/cem_APO.rds")
+```
+
+```{r}
+cem_APO <- read_rds("rds/cem_APO.rds")
+```
+
+## Heatmap w clusters
+
+```{r}
+resultsNames(des_APO)
+```
+
+```{r}
+all_apo_l2fcs <- rbind(results(des_APO,c("Treat_Time","APO_1","DMSO_0")) %>%
+                        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "APO 1"),
+      results(des_APO,c("Treat_Time","APO_6","DMSO_0")) %>% 
+         as_tibble(rownames = "row") %>%
+        mutate(Comparison = "APO 6"),
+      results(des_APO,c("Treat_Time","APO_24","DMSO_0")) %>% 
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "APO 24"),
+       results(des_APO,c("Treat_Time","DMSO_1","DMSO_0")) %>%
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "DMSO 1"),
+      results(des_APO,c("Treat_Time","DMSO_6","DMSO_0")) %>% 
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "DMSO 6"),
+      results(des_APO,c("Treat_Time","DMSO_24","DMSO_0")) %>% 
+        as_tibble(rownames = "row") %>%
+        mutate(Comparison = "DMSO 24")) %>% 
+  # Adjust to account for large number of comparisons
+  mutate(padj_global = p.adjust(pvalue,"fdr"))
+```
+
+
+```{r}
+apo_heatmap_w_clusters <- all_apo_l2fcs %>% 
+  filter(padj_global < 0.01) %>% 
+  left_join(cem_APO@module %>% mutate(modules = str_replace_all(modules, "M","A")), by = c("row" = "genes")) %>% 
+  separate("Comparison",c("Treatment", "Timepoint")," ",remove=F) %>% 
+  ggplot(aes(x=fct_relevel(Timepoint,c("1","6","24")), y = row)) +
+  geom_tile(aes(fill = log2FoldChange)) +
+  scale_fill_gradientn(colors = RColorBrewer::brewer.pal(11, "PRGn"), limits = c(-9,9)) +
+  facet_grid(modules~fct_relevel(Treatment,"DMSO"),scales="free_y") +
+  labs(y = element_blank(),
+       x = "Timepoint",
+       title = "Expression relative to T0",
+       subtitle = "filtered for globally fdr adjusted p < 0.01") +
+  theme(text = element_text(family="NimbusMon",size = 13),
+        strip.background.y = element_rect(fill = "white",color="black"),
+        strip.background.x = element_rect(fill = "white"),
+        strip.text.y = element_text(angle = 0),
+        axis.text.y = element_blank(),
+        axis.ticks.length.y = unit(0,"cm"),
+        panel.spacing.y = unit(4,"pt"),
+        panel.background = element_blank(),
+        panel.grid = element_blank()) +
+  NULL
+apo_heatmap_w_clusters
+```
+
+# Enrichment GO
+
+```{r}
+tair_go <- read_tsv("arabidopsis_resources/ATH_GO_GOSLIM.txt",skip = 4, col_names =F) %>% 
+  # see col descriptions 
+  # https://arabidopsis.org/download_files/GO_and_PO_Annotations/Gene_Ontology_Annotations/ATH_GO.README.txt
+  set_colnames(c("GeneId", 
+                 "tair_acc",
+                 "object_name",
+                 "relationship_type",
+                 "GO_term",
+                 "GO_ID",
+                 "tair_keyword",
+                 "aspect",
+                 "GOslim_term",
+                 "evi_code",
+                 "evi_descr",
+                 "evi_with",
+                 "ref",
+                 "annotator",
+                 "annotation_date"))
+```
+
+### APO
+
+```{r}
+APO_up_genes_from_modules <- cem_APO@module %>% 
+    dplyr::filter(modules %in% c("M3","M6","M7")) %>% 
+    left_join(all_apo_l2fcs, by = c("genes"="row")) %>% 
+    dplyr::filter(str_detect(Comparison, "APO")) %>% 
+    dplyr::filter(log2FoldChange > 0) %>% 
+    dplyr::filter(padj_global < 0.01) %>% 
+    dplyr::select(genes) %>% 
+    unique()
+```
+
+```{r}
+APO_ORA_GO <- clusterProfiler::enricher(APO_up_genes_from_modules$genes,
+                                                    TERM2GENE = tair_go %>% 
+                                                                filter(aspect == "F") %>%
+                                                                dplyr::select( GO_ID,GeneId) %>%
+                                                                unique %>%
+                                                                set_colnames(c("term","gene"))) 
+```
+
+```{r}
+APO_ORA_GO@result %>% left_join(AnnotationDbi::select(GO.db::GO.db,
+                                                      keys = APO_ORA_GO$ID,
+                                                      columns=AnnotationDbi::columns(GO.db::GO.db)), by = c("ID" = "GOID")) %>% 
+  filter(p.adjust < 0.01) 
+```
+
+```{r}
+plotdat_APO_GO <- rbind(APO_ORA_GO@result %>%
+                                   left_join(AnnotationDbi::select(GO.db::GO.db,
+                                                                  keys = APO_ORA_GO$ID,
+                                                                  columns=AnnotationDbi::columns(GO.db::GO.db)),
+                                             by = c("ID" = "GOID")) %>% 
+  filter(p.adjust< 0.05) %>% 
+  rowwise %>% 
+  mutate(Obs_ratio = eval(parse(text = GeneRatio)),
+         Exp_ratio = eval(parse(text = BgRatio))) %>% 
+  ungroup() %>% 
+  #filter(Obs_ratio >= 0.01) %>% 
+  pivot_longer(contains("_ratio"), values_to ="Ratio", names_to = "Representation") %>% 
+  mutate(Representation = case_when(str_detect(Representation,"Obs") ~"In Set", 
+                                    TRUE ~ "Background"),
+          Module = "A3, A6, A7")) %>% 
+  #filter(p.adjust < 0.001) %>% 
+  unique() %>% 
+  mutate(GeneSet = TERM %>%
+           as.character() %>% 
+           str_remove_all("\\(Arabidopsis\\)") %>% 
+           str_remove_all("<i>") %>%
+           str_replace_all("</\ni>","\n") %>%  
+           str_replace_all("biosynthe...","biosynthesis") %>% 
+           str_wrap(width = 30)) %>% 
+  #mutate(GeneSet = GeneSet %>% as.factor() %>% fct_reorder((-log10(p.adjust)))) 
+  mutate(GeneSet = GeneSet %>% as.factor() %>% fct_reorder(Ratio, max)) 
+
+plot_overrep_APO_GO <- plotdat_APO_GO %>% 
+  ggplot(aes(x=GeneSet, y=Ratio, 
+             group = Representation)) +
+  geom_linerange(aes(xmax=GeneSet, ymin=0, ymax=Ratio, color = Representation),size = 2,alpha =0.7) +
+  geom_point(aes(x=GeneSet,fill=-log10(p.adjust)),
+             pch=21, 
+             data = plotdat_APO_GO[plotdat_APO_GO$Representation == "In Set",],
+             position = position_dodge(width = 0.20),
+             size = 5) +
+  scale_fill_gradient(low = "#EAD3BF", high = "#9986A5",name = "A3 and A7\n-log10(adjusted p)" ) +
+  theme_bw() +
+  ggthemes::scale_color_solarized() +
+  theme(panel.grid.major.y = element_blank(),text=element_text(family = "NimbusMon")) +
+  #scale_fill_gradientn(colours = cm.colors(10)) +
+  labs(title="GO enriched in A3 and A7",x="") +
+  coord_flip() +
+  #facet_grid(~Module,scales = "free")+
+  NULL
+plot_overrep_APO_GO
+```
+
+#### Cleaned plot
+
+```{r}
+plot_overrep_APO_GO_clean <- plotdat_APO_GO %>% 
+  filter(!str_detect(TERM, "querc|daph|myric|flavonol|acting on paired donors|iron|UDP")) %>% 
+  ggplot(aes(x=GeneSet, y=Ratio, 
+             group = Representation)) +
+  geom_linerange(aes(xmax=GeneSet, ymin=0, ymax=Ratio, color = Representation),size = 2,alpha =0.7) +
+  geom_point(aes(x=GeneSet,fill=-log10(p.adjust)),
+             pch=21, 
+             data = plotdat_APO_GO[plotdat_APO_GO$Representation == "In Set",] %>%
+                    filter(!str_detect(TERM, "querc|daph|myric|flavonol|acting on paired donors|iron|UDP")),
+             position = position_dodge(width = 0.20),
+             size = 5) +
+  scale_fill_gradient(low = "#EAD3BF",
+                      high = "#9986A5",
+                      name = "-log10(adjusted p)", 
+                      limits = c(1,13)  ) +
+  theme_bw() +
+  ggthemes::scale_color_solarized() +
+  theme(panel.grid.major.y = element_blank(),text=element_text(family = "NimbusMon")) +
+  #scale_fill_gradientn(colours = cm.colors(10)) +
+  labs(title="GO terms enriched in A3, A6 and A7",x="") +
+  coord_flip() +
+  #facet_grid(~Module,scales = "free")+
+  NULL
+plot_overrep_APO_GO_clean
+```
+
+
+## MomiB
+
+```{r}
+mom_up_genes_from_modules <- cem_momi@module %>% 
+  filter(modules %in% c("M1")) %>%
+  left_join(all_momB_l2fcs, by = c("genes"="row")) %>% 
+  dplyr::filter(str_detect(Comparison, "MomB")) %>% 
+  dplyr::filter(log2FoldChange > 0) %>% 
+  dplyr::filter(padj_global < 0.01) %>% 
+  dplyr::select(genes) %>% 
+    unique()
+```
+
+```{r}
+mom_ORA_GO <- clusterProfiler::enricher(mom_up_genes_from_modules %$% genes, 
+                                        TERM2GENE = tair_go %>%
+                                          filter(aspect == "F") %>% 
+                                          dplyr::select( GO_ID,GeneId) %>% 
+                                          unique %>% 
+                                          set_colnames(c("term","gene"))) 
+```
+
+```{r}
+plotdat_mom_GO <- rbind(mom_ORA_GO@result %>%
+                                   left_join(AnnotationDbi::select(GO.db::GO.db,
+                                                                  keys = mom_ORA_GO$ID,
+                                                                  columns=AnnotationDbi::columns(GO.db::GO.db)),
+                                             by = c("ID" = "GOID")) %>% 
+  filter(p.adjust < 0.05) %>% 
+  rowwise %>% 
+  mutate(Obs_ratio = eval(parse(text = GeneRatio)),
+                                     Exp_ratio = eval(parse(text = BgRatio))) %>% 
+  ungroup() %>% 
+  #filter(Obs_ratio >= 0.01) %>% 
+  pivot_longer(contains("_ratio"), values_to = "Ratio", names_to = "Representation") %>% 
+  mutate(Representation = case_when(str_detect(Representation,"Obs") ~ "In Set", 
+                                    TRUE~"Background"),
+          Module = "M1")) %>% 
+  #filter(p.adjust < 0.001) %>% 
+  unique() %>% 
+  mutate(GeneSet = TERM %>%
+           as.character() %>% 
+           str_remove_all("\\(Arabidopsis\\)") %>% 
+           str_remove_all("<i>") %>%
+           str_replace_all("</\ni>","\n") %>%  
+           str_replace_all("biosynthe...","biosynthesis") %>% 
+           str_wrap(width = 30)) %>% 
+  mutate(GeneSet = GeneSet %>% as.factor() %>% fct_reorder(Ratio, max))
+```
+
+```{r}
+plotdat_mom_GO %>% dplyr::select(geneID, GeneSet) %>% unique %>% dplyr::arrange(GeneSet)
+```
+
+
+
+```{r}
+redundant_terms <- plotdat_mom_GO %>%
+  dplyr::select(geneID, GeneSet) %>%
+  unique %>% 
+  mutate(genes = str_extract_all(geneID, "[ATMG0-9]+")) %>% 
+  unnest(cols = c(genes)) %>% 
+  dplyr::select(GeneSet, genes) %>% 
+  mutate(in_set = T) %>% 
+  pivot_wider(id_cols = "genes", names_from = "GeneSet", values_from = in_set) %>% 
+  {mutate(.,num_sets = rowSums(.[,2:ncol(.)],na.rm = T))}
+unique_terms <- redundant_terms %>%
+  filter(num_sets == 1) %>% 
+  dplyr::select(where(~ sum(!is.na(.x)) > 0)) %>% 
+   dplyr::select(-genes, -num_sets) %>% 
+  colnames()
+
+redundant_terms %>% dplyr::select(-all_of(unique_terms), -num_sets) %>% 
+  pivot_longer(!starts_with("gene"),names_to = "Set", values_to ="In") %>% 
+  filter(!is.na(In)) %>% 
+  dplyr::arrange(genes,Set)
+```
+
+
+```{r}
+plot_overrep_mom_GO <- plotdat_mom_GO %>% 
+  ggplot(aes(x=GeneSet, y=Ratio, 
+             group = Representation)) +
+  geom_linerange(aes(xmax=GeneSet, ymin=0, ymax=Ratio, color = Representation),size = 2,alpha =0.7) +
+  geom_point(aes(x=GeneSet,fill=-log10(p.adjust)),
+             pch=21, 
+             data = plotdat_mom_GO[plotdat_mom_GO$Representation == "In Set" ,],
+             position = position_dodge(width = 0.20),
+             size = 5) +
+  scale_fill_gradient(low = "#EAD3BF",
+                      high = "#9986A5",
+                      name = "-log10(adjusted p)", 
+                      limits = c(1,10)  ) +
+  theme_bw() +
+  ggthemes::scale_color_solarized() +
+  theme(panel.grid.major.y = element_blank(),text=element_text(family = "NimbusMon")) +
+  #scale_fill_gradientn(colours = cm.colors(10)) +
+  labs(title="GO enriched in M1",x="") +
+  coord_flip() +
+  #facet_grid(~Module,scales = "free")+
+  NULL
+plot_overrep_mom_GO
+```
+
+#### Cleaned Plot
+
+```{r}
+plot_overrep_mom_GO_clean <- plotdat_mom_GO %>% 
+  filter(!str_detect(TERM, "querc|daph|myric|flavonol|xylo")) %>% 
+  ggplot(aes(x=GeneSet, y=Ratio, 
+             group = Representation)) +
+  geom_linerange(aes(xmax=GeneSet, ymin=0, ymax=Ratio, color = Representation),size = 2,alpha =0.7) +
+  geom_point(aes(x=GeneSet,fill=-log10(p.adjust)),
+             pch=21, 
+             data = plotdat_mom_GO[plotdat_mom_GO$Representation == "In Set" ,] %>% 
+               filter(!str_detect(TERM, "querc|daph|myric|flavonol|xylo")) ,
+             position = position_dodge(width = 0.20),
+             size = 5) +
+  scale_fill_gradient(low = "#EAD3BF",
+                      high = "#9986A5",
+                      name = "-log10(adjusted p)", 
+                      limits = c(1,13) ) +
+  theme_bw() +
+  ggthemes::scale_color_solarized() +
+  theme(panel.grid.major.y = element_blank(),text=element_text(family = "NimbusMon")) +
+  #scale_fill_gradientn(colours = cm.colors(10)) +
+  labs(title="GO enriched in M1",x="") +
+  coord_flip() +
+  #facet_grid(~Module,scales = "free")+
+  NULL
+plot_overrep_mom_GO_clean
+```
+
+### Fig
+
+```{r}
+Fig_GO <- (plot_overrep_APO_GO_clean + ggtitle("APO Modules A3, A6 and A7 ")) + 
+  (plot_overrep_mom_GO_clean + ggtitle("Momilactone B Module M1 ")) + 
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom",
+        text = element_text(family = "Arial", size = 16))
+Fig_GO
+```
+```{r}
+rbind(
+plotdat_mom_GO %>% filter(Representation == "In Set") %>% dplyr::select(geneID,TERM) %>% mutate(Treat = "Momi"),
+plotdat_APO_GO %>% filter(Representation == "In Set") %>% dplyr::select(geneID,TERM) %>% mutate(Treat = "APO")) %>% 
+  write_csv("GO_enriched_genes.csv")
+
+```
+
+# FoldChange table
+
+```{r}
+bind_rows(list(all_apo_l2fcs %>% 
+                filter(str_detect(Comparison, "APO")) %>%
+                filter(padj < 0.01),
+              all_momB_l2fcs %>% 
+                filter(str_detect(Comparison, "Mom")) %>%
+                filter(padj < 0.01))) %>% 
+  {dplyr::select(., GeneId = row, colnames(.)[2:ncol(.)], -padj_global)} %>% 
+  write_csv("TabS2_significant_DEGs.csv")
+```
+
+```{r}
+colors <- c("grey80",wes_palette("Rushmore1")[3],wes_palette("BottleRocket1")[3])
+names(colors) <- c("ns","up","down")
+bind_rows(list(all_apo_l2fcs %>% 
+                filter(str_detect(Comparison, "APO")),
+              all_momB_l2fcs %>% 
+                filter(str_detect(Comparison, "Mom")))) %>% 
+  mutate(color = case_when(padj > 0.01 ~ "ns",
+                           is.na(padj) ~ "ns",
+                           log2FoldChange > 2 ~ "up",
+         log2FoldChange < -2 ~ "down",
+         TRUE ~ "ns")) %>% 
+  ggplot(aes(x=log2FoldChange, y = -log10(padj), color = color)) +
+  geom_point() +
+  facet_grid(str_extract(Comparison, "[A-Za-z]+") ~ as.numeric(str_extract(Comparison, "[0-9]+"))) +
+  scale_color_manual(values = colors) +
+  theme_bw() +
+  theme(strip.background = element_rect(fill = "white"))
+```
+
+
+# Figures
+
+## PCA
+
+```{r}
+Fig_pca <- (PCA_APO + ggtitle("APO Experiment")
+ + PCA_momi + ggtitle("Momilactone B Experiment")) + 
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom",
+        text = element_text(family = "Arial", size = 16))
+Fig_pca
+```
+
+## Heatmaps
+
+```{r}
+fig_heat <- (apo_heatmap_w_clusters + ggtitle("APO Experiment",subtitle = NULL)  +
+               momB_heatmap_w_clusters + ggtitle("Momilactone B Experiment",subtitle = NULL)) +
+  plot_annotation(title = "Differential gene expression") +
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom",
+        text = element_text(family = "Arial", size = 16))
+fig_heat
+```
+
+### Cleaned
+
+```{r}
+momB_heatmap_w_clusters_c <- all_momB_l2fcs %>% 
+  filter(padj_global < 0.01) %>% 
+  left_join(cem_momi@module,by = c("row" = "genes")) %>% 
+  mutate(modules = modules %>% str_replace("Not.Correlated",
+                               "Not\nCorrelated")) %>% 
+  filter(modules != "NA") %>% 
+  separate("Comparison",c("Treatment", "Timepoint")," ",remove=F) %>% 
+  #filter(modules != "Not.Correlated") %>% 
+  ggplot(aes(x=fct_relevel(Timepoint,c("1","6","24")), y = row)) +
+  geom_tile(aes(fill = log2FoldChange)) +
+  scale_fill_gradientn(colors = RColorBrewer::brewer.pal(11, "PRGn"),
+                       limits = c(-10,10)) +
+  facet_grid(modules~Treatment,scales="free_y") +
+  labs(y = element_blank(),
+       x = "Timepoint",
+       title = "Expression relative to T0",
+       subtitle = "filtered for globally fdr adjusted p < 0.01") +
+  theme(text = element_text(family="NimbusMon",size = 13),
+        strip.background.y = element_rect(fill = "white",color="black"),
+        strip.background.x = element_rect(fill = "white"),
+        strip.text.y = element_text(angle = 0),
+        axis.text.y = element_blank(),
+        axis.ticks.length.y = unit(0,"cm"),
+        panel.spacing.y = unit(4,"pt"),
+        panel.background = element_blank(),
+        panel.grid = element_blank()) +
+  NULL
+apo_heatmap_w_clusters_c <- all_apo_l2fcs %>% 
+  filter(padj_global < 0.01) %>% 
+  left_join(cem_APO@module %>% mutate(modules = str_replace_all(modules,
+                                                                "M","A") %>% 
+                                        str_replace("Not.Correlated",
+                                                    "Not\nCorrelated")),
+              by = c("row" = "genes")) %>% 
+  filter(modules != "NA") %>% 
+  separate("Comparison",c("Treatment", "Timepoint")," ",remove=F) %>% 
+  ggplot(aes(x=fct_relevel(Timepoint,c("1","6","24")), y = row)) +
+  geom_tile(aes(fill = log2FoldChange)) +
+  scale_fill_gradientn(colors = RColorBrewer::brewer.pal(11, "PRGn"),
+                       limits = c(-10,10)) +
+  facet_grid(modules~fct_relevel(Treatment,"DMSO"),scales="free_y") +
+  labs(y = element_blank(),
+       x = "Timepoint",
+       title = "Expression relative to T0",
+       subtitle = "filtered for globally fdr adjusted p < 0.01") +
+  theme(text = element_text(family="NimbusMon",size = 13),
+        strip.background.y = element_rect(fill = "white",color="black"),
+        strip.background.x = element_rect(fill = "white"),
+        strip.text.y = element_text(angle = 0),
+        axis.text.y = element_blank(),
+        axis.ticks.length.y = unit(0,"cm"),
+        panel.spacing.y = unit(4,"pt"),
+        panel.background = element_blank(),
+        panel.grid = element_blank()) +
+  NULL
+```
+
+```{r}
+fig_heat_c <- (apo_heatmap_w_clusters_c + 
+                 ggtitle(NULL, subtitle = "APO Experiment")  +
+               momB_heatmap_w_clusters_c + 
+                 ggtitle(NULL, subtitle = "Momilactone B Experiment")) +
+  plot_annotation(title = "Differential gene expression") +
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom",
+        text = element_text(family = "Arial", size = 16))
+fig_heat_c
+```
+
+
+```{r}
+Fig_pca /
+  fig_heat_c /
+  fig_overrep +
+  plot_annotation("Figure 1", tag_levels = "A")
+```
+
+
+## Module Loci
+
+```{r}
+module_loci <- rbind(APO_up_genes_from_modules %>% 
+  set_colnames("GeneId") %>% 
+  mutate(Set = "APO_up"),
+  mom_up_genes_from_modules %>%
+  set_colnames("GeneId") %>% 
+  mutate(Set = "MomiB_up")) %>% 
+  left_join(gene_info %>% dplyr::select(GeneId,description))
+```
+
+# Phylogenetic analysis
+
+## BOA DEGs
+
+ 	Genes from _Detoxification and transcriptome response in Arabidopsis seedlings exposed to the allelochemical benzoxazolin-2(3H)-one._ 10.1074/jbc.M500694200 (https://www.arabidopsis.org/servlets/TairObject?type=publication&id=501716333)
+ 	
+```{r}
+genes_boa <-	"AT1G49860 (GSTF14)  AT1G50590  AT1G12010 (ACO3)  AT1G13420 (ST4B)  AT1G18970 (GLP4)  AT1G76520 (PILS3)  AT1G55850 (CSLE1)  AT1G54100 (ALDH7B4)  AT1G30870 (PER7)  AT1G51800 (IOS1)  AT1G51820 (SIF4)  AT1G65690 (NHL6)  AT1G17180 (GSTU25)  AT1G02850 (BGLU11)  AT1G70530 (CRK3)  AT1G68570 (NPF3.1)  AT1G68620  AT1G21400  AT1G26250 (EXT18)  AT1G76690 (OPR2)  AT1G72680 (CAD1)  AT1G05680 (UGT74E2)  AT1G78340 (GSTU22)  AT1G51420 (SPP1)  AT1G52060  AT1G23720 (EXT15)  AT1G14130 (DAO1)  AT1G60730  AT1G60750  AT1G21680  AT1G21670  AT1G32940 (SBT3.5)  AT1G32960 (SBT3.3)  AT2G35980 (YLS9)  AT2G41380  AT2G36790 (UGT73C6)  AT2G37770 (ChlAKR)  AT2G37760 (AKR4C8)  AT2G29490 (GSTU1)  AT2G29420 (GSTU7)  AT2G43620  AT2G43590  AT2G23540  AT2G24980 (EXT6)  AT2G36220  AT2G04040 (DTX1)  AT2G44130 (KMD3)  AT2G15480 (UGT73B5)  AT2G15490 (UGT73B4)  AT2G18690  AT2G14560 (LURP1)  AT2G39210 (PIC30)  AT2G39200 (MLO12)  AT2G43510 (TI1)  AT2G19190 (FRK1)  AT2G30140 (UGT87A2)  AT2G34660 (ABCC2)  AT2G35380  AT2G05940 (RIPK)  AT2G37870  AT2G26560 (PLA2A)  AT3G46280  AT3G10500 (NAC053)  AT3G59140 (ABCC10)  AT3G26470  AT3G62680 (PRP3)  AT3G09270 (GSTU8)  AT3G53480 (ABCG37)  AT3G14990 (DJ1A)  AT3G13310 (DJC66)  AT3G14620 (CYP72A8)  AT3G18250  AT3G25930  AT3G26210 (CYP71B23)  AT3G21250 (ABCC8)  AT3G22060  AT3G04070 (NAC047)  AT3G04000 (CHLADR)  AT3G01420 (DOX1)  AT3G54590 (HRGP1)  AT3G28740 (CYP81D11)  AT3G50480 (HR4)  AT3G49120 (PRXCB)  AT3G56710 (SIB1)  AT4G36430  AT4G30490  AT4G13180  AT4G37530  AT4G21990 (APR3)  AT4G26010  AT4G20830 (ATBBE19)  AT4G23260 (CRK18)  AT4G18360 (GOX3)  AT4G01070 (GT72B1)  AT4G37370 (CYP81D8)  AT4G22470 (DHYPRP1)  AT4G22530  AT4G23700 (CHX17)  AT4G30170  AT4G15390  AT4G15490 (UGT84A3)  AT4G15530 (PPDK)  AT4G35180 (LHT7)  AT4G20860 (ATBBE22)  AT4G01700  AT4G19880  AT4G33720 (ATCAPE3)  AT4G24160  AT4G12550 (AIR1)  AT4G12480 (EARLI1)  AT4G12490 (AZI3)  AT4G12500  AT4G27830 (BGLU10)  AT4G11650 (OSM34)  AT4G40090 (AGP3)  AT4G01870  AT5G10430 (AGP4)  AT5G10580  AT5G03350 (SAI-LLP1)  AT5G03120  AT5G27600 (LACS7)  AT5G09530 (PELPK1)  AT5G27420 (CNI1)  AT5G54500 (FQR1)  AT5G16970 (AER)  AT5G16980  AT5G26340 (MSS1)  AT5G47070 (PBL19)  AT5G38900 (PDI)  AT5G59090 (SBT4.12)  AT5G24530 (DMR6)  AT5G61820  AT5G63790 (NAC102)  AT5G45380 (DUR3)  AT5G64120 (PRX71)  AT5G39580 (PRX62)  AT5G56630 (PFK7)  AT5G57220 (CYP81F2)  AT5G42050 (NRP)  AT5G48540  AT5G06860 (PGIP1)  AT5G05500 (MOP10)  AT5G24210  AT5G62630 (HIPL2)  AT5G64250  AT5G17860 (CAX7)  AT5G13750 (ZIFL1)  AT5G39050 (PMAT1)  AT5G25930  AT5G35190 (EXT13)  AT5G14730  AT1G51850 (SIF2)  AT1G51890  AT1G15520 (ABCG40)  AT1G76240  AT1G05560 (UGT75B1)  AT1G30410 (ABCC12)  AT1G30700 (ATBBE8)  AT1G30720 (ATBBE10)  AT1G79410 (OCT5)  AT1G72200 (ATL11)  AT1G05250 (PRX2)  AT1G67810 (SUFE2)  AT2G17740 (VLG)  AT1G10585  AT3G22231 (PCC1)  AT4G14365 (XBAT34)  AT4G22212  AT4G34135 (UGT73B2)  AT4G34138 (UGT73B1)  AT5G12420 (WSD7)" %>% 
+  str_extract_all("AT[1-5]G[0-9]+") %>% 
+  unlist
+```
+
+
+## Glycosyltransferases
+
+### Get Sequences
+
+```{r}
+cazy_athaliana <- read_delim("arabidopsis_resources/cazy_athaliana_proteins.csv", delim = ";")
+```
+
+
+```{r}
+cazy_gt1 <- cazy_athaliana %>%
+  filter(Family == "GT1") %>% 
+  mutate(GeneId = str_extract(Name,"A[Tt][1-5][gG][0-9]+")) %>% 
+  mutate(GeneId = toupper(GeneId)) %>% 
+  mutate(UGT_ID = str_extract(Name, regex("UGT[a-z0-9]+", ignore_case = T)))
+```
+
+```{r}
+athaliana_proteins <- Biostrings::readAAStringSet("arabidopsis_resources/Araport11_genes.201606.pep.fasta")
+prot_names <- data.frame(name = names(athaliana_proteins), rownum = 1:length(names(athaliana_proteins))) 
+prot_names %<>% mutate(transcript = str_extract(name,"A[Tt][1-5][gG][0-9]+\\.[0-9]"),
+                      GeneId = str_extract(name,"A[Tt][1-5][gG][0-9]+"))
+```
+
+```{r}
+ara_ugts <- read_delim("tables/ArabidopsisUGTs.csv", delim = ";") %>% 
+   mutate(GeneId = str_extract(Accession,"A[Tt][1-5][gG][0-9]+") %>% 
+           str_replace_all("g","G") %>%
+           str_replace_all("t","T") ) %>% 
+  dplyr::select(Name, GeneId)
+```
+
+
+```{r message = F} 
+ugt_to_tair <- read_delim("tables/ugt_to_tair.csv", delim = ";") %>% 
+  mutate(GeneId = str_extract(Accession,"A[Tt][1-5][gG][0-9]+") %>% 
+           str_replace_all("g","G") %>%
+           str_replace_all("t","T") ) %>% 
+  dplyr::select(Name, GeneId)
+bh_ugts <- read_delim("tables/brazier_hicks_ugts.csv", delim = ";") %>% 
+  mutate(GeneId = str_extract(`accession number`,"A[Tt][1-5][gG][0-9]+") %>% 
+           str_replace_all("g","G") %>% 
+           str_replace_all("t","T") ) %>% 
+  dplyr::select(name, GeneId)
+ugts_with_family <- ara_ugts %>% 
+  filter(!str_detect(Name, "[0-9]P"))
+```
+
+```{r}
+gt1_rows <- prot_names[prot_names$GeneId %in% ugts_with_family$GeneId,] %>% 
+  group_by(GeneId) %>% summarize(row = min(rownum)) %$% row
+```
+
+```{r}
+ara_gt1_seqs <- athaliana_proteins[gt1_rows,]
+```
+
+### Align
+
+```{r message = F}
+ara_gt1_aln <- DECIPHER::AlignSeqs(ara_gt1_seqs)
+```
+
+```{r}
+ara_gt1_aln <- DECIPHER::AdjustAlignment(ara_gt1_aln)
+```
+
+### Compute tree
+
+```{r eval = F}
+if(!file.exists("gt1_tree_ml_noboot.rds")) {
+  gt1_tree_ml_noboot <- phangorn::phyDat(as(ara_gt1_aln, "matrix"),
+                                type="AA") %>% 
+  phangorn::dist.ml() %>% 
+  phangorn::NJ() %>% 
+  phangorn::pml(data = phangorn::phyDat(as(ara_gt1_aln, "matrix"),
+                                       type="AA"), model = "WAG") %>% 
+  optim.pml(optNni = T, optEdge = T)
+gt1_tree_ml_noboot %>% write_rds("rds/gt1_tree_ml_noboot.rds")
+}
+gt1_tree_ml_noboot <-  read_rds("rds/gt1_tree_ml_noboot.rds")
+
+if(!file.exists("rds/gt1_boot.rds")) {
+gt1_boot <- bootstrap.pml(gt1_tree_ml_noboot, bs = 1000, multicore = T, mc.cores = 20, optNni=T)
+gt1_boot %>% write_rds("rds/gt1_boot.rds")
+}
+gt1_boot <- read_rds("rds/gt1_boot.rds")
+gt1_tree_ml <- gt1_tree_ml_noboot
+
+gt1_tree_ml$tree <- plotBS(gt1_tree_ml_noboot$tree,gt1_boot,type="n")
+gt1_tree_ml %>% write_rds("rds/gt1_tree_ml.rds")
+```
+
+```{r}
+gt1_tree_ml <- read_rds("rds/gt1_tree_ml.rds")
+gt1_tree_ml$tree$tip.label <- str_extract(gt1_tree_ml$tree$tip.label,"A[Tt][1-5][gG][0-9]+")
+```
+
+### Tree formatting
+
+```{r}
+gt1tree_structure <- gt1_tree_ml$tree %>% root(ugt_to_tair %>% filter(Name == "UGT81A1") %>% .$GeneId)  %>% treeio::as.phylo()
+
+gt1_groupInfo <- split(gt1_tree_ml$tree$tip.label, gsub("_\\w+", "", gt1_tree_ml$tree$tip.label))
+gt1tree_structure <- groupOTU(gt1tree_structure, gt1_groupInfo)
+```
+
+```{r}
+gt1s_apo_momi <- intersect((module_loci %>% filter(Set == "APO_up") %$% GeneId),
+                           (module_loci %>% filter(Set == "MomiB_up") %$% GeneId))
+gt1tree_plotdat <- data.frame(id = gt1_tree_ml$tree$tip.label) %>% 
+  group_by(id) %>% 
+  dplyr::mutate(enriched = case_when(id %in% gt1s_apo_momi ~ "Both",
+                              id %in% (module_loci %>% filter(Set == "APO_up") %$% GeneId) ~ "APO",
+                              id %in% (module_loci %>% filter(Set == "MomiB_up") %$% GeneId) ~ "MomiB",
+                              TRUE ~ "No"),
+                in_genesets = case_when(id %in% intersect((bh_ugts %$% GeneId), genes_boa) ~ "Brazier-Hicks et al. &\nBaerson et al.", 
+                                         id %in% (bh_ugts %$% GeneId) ~ "Brazier-Hicks et al.",
+                                         id %in% genes_boa ~ "Baerson et al.",
+                                      TRUE ~ "No")) %>% 
+  left_join(ugt_to_tair, by = c("id" = "GeneId")) %>% 
+  mutate(Family = str_extract(Name, "[0-9]+"))
+
+gt1_groupInfo <- as.list(c(gt1tree_plotdat$id) ) %>% flatten()
+names(gt1_groupInfo) <- gt1tree_plotdat$in_genesets
+gt1tree_structure <- groupOTU(gt1tree_structure, gt1_groupInfo)
+```
+
+```{r}
+families_enriched <- gt1tree_plotdat %>% filter(enriched != "No") %$% Family %>% unique()
+```
+
+```{r}
+colors_branches <- c("0" = "#5F5647",
+                     "Baerson et al." = "#74A089", 
+                     "Brazier-Hicks et al." = "#F8AFA8", 
+                     "Brazier-Hicks et al. &\nBaerson et al." = "#FDDDA0",
+                     "No" = "#5F5647")
+```
+
+### Tree plots
+
+```{r}
+set.seed(54321)
+gt1_tree_plot <- gt1tree_structure %>%
+  ggtree(layout = 'fan',aes(color = group)) 
+gt1_tree_plot <- gt1_tree_plot  %<+% gt1tree_plotdat +
+  #geom_tree() +
+  scale_color_manual(values=colors_branches) +
+  ggnewscale::new_scale_color() +
+  geom_tippoint(aes(fill = enriched),pch=21,size=3) +
+  geom_tiplab2(aes(color = Family,label = Name), offset = 0.1) +
+  # geom_cladelabel()
+  theme_tree() +
+  theme(text=element_text(family = "NimbusMon",size=8)) +
+  scale_fill_manual(values=c("No" = "#5F5647",
+                             "Both" = "#FAEFD1", 
+                             "APO" =  "#ABDDDE",
+                             "MomiB" = "#F8AFA8")) +
+  ggnewscale::new_scale_fill() +
+   NULL
+```
+
+Diagnostic tree for cladelabels
+
+```{r}
+gt1tree_structure %>%
+  ggtree(layout = 'slanted') %<+% 
+  gt1tree_plotdat +
+    geom_nodelab(aes(label=node)) +
+  geom_tiplab(aes(label = Name, color =Family)) + theme(legend.position = "none")
+```
+
+```{r}
+# For tree rooted at UGT81A1
+cladelab_offset = 0.8
+gt1_tree_plot <- gt1tree_structure %>%
+  ggtree(layout = 'fan',aes(color = group),branch.length = 0.8) 
+gt1_tree_plot <- gt1_tree_plot  %<+% gt1tree_plotdat +
+  #geom_tree() +
+  scale_color_manual(values=colors_branches) +
+  ggnewscale::new_scale_color() +
+  geom_tippoint(aes(fill = enriched),pch=21,size=3) +
+  geom_tiplab2(aes(label = Name), offset = 0.1,size=4) +
+  geom_cladelabel(143, "71", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(129, "72", offset = cladelab_offset, offset.text = 0.15, align =T) +
+  geom_cladelabel(137, "73", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(133, "74", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(146, "75", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(135, "76", offset = cladelab_offset, offset.text = 0.15, align =T) +
+  geom_cladelabel(213, "78", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(207, "79", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(221, "80", offset = (cladelab_offset + 0.4), offset.text = 0.1, align =T) +
+  #geom_cladelabel(222, "81", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(131, "82\n83",offset = cladelab_offset, offset.text = 0.1, align =T, hjust = 1) +
+  #geom_cladelabel(190, "83",offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(132, "84", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(150, "85", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(158, "86", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(200, "87", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  #geom_cladelabel(189, "88",offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(147, "89", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(167, "90", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_cladelabel(171, "91", offset = cladelab_offset, offset.text = 0.1, align =T) +
+  #geom_cladelabel(221, "92",offset = cladelab_offset, offset.text = 0.1, align =T) +
+  geom_text2(aes(subset = !isTip, label=label), size = 2.5) +
+  theme_tree() +
+  theme(text=element_text(family = "NimbusMon")) +
+  scale_fill_manual(values=c("No" = "#5F5647", "Both" = "#FAEFD1", "APO" =  "#ABDDDE", "MomiB" = "#F8AFA8")) +
+  ggnewscale::new_scale_fill() +
+  NULL
+```
+```{r}
+gt1_tree_plot +
+    theme(text=element_text(family = "Arial", size = 16)) +
+  NULL
+```
+```{r}
+gt1_tree_plot +
+  theme(legend.position = "none")
+```
+
+## GSTs
+
+### Get Sequences
+
+GSTS from here https://www.arabidopsis.org/browse/genefamily/gst.jsp
+
+```{r}
+tair_gsts <- read_delim("arabidopsis_resources/tair_gst1_list.csv")
+```
+
+```{r}
+tair_gsts <- tair_gsts %>%
+  mutate(GeneId = str_extract(Locus,"AT[1-5][gG][0-9]+")) %>% 
+  mutate(GeneId = str_replace_all(GeneId, "g","G")) %>%
+  filter(!is.na(GeneId)) %>% 
+  mutate(Family = str_remove_all(Family,"family") %>% str_trim("right"))
+```
+
+```{r}
+gst_rows <- prot_names[prot_names$GeneId %in% tair_gsts$GeneId,] %>% 
+  group_by(GeneId) %>% summarize(row = min(rownum)) %$% row
+```
+
+```{r}
+ara_gst_seqs <- athaliana_proteins[gst_rows,]
+```
+
+### Align
+
+```{r message = F}
+ara_gst_aln <- DECIPHER::AlignSeqs(ara_gst_seqs)
+```
+
+```{r}
+ara_gst_aln <- DECIPHER::AdjustAlignment(ara_gst_aln)
+```
+
+### Compute tree
+
+```{r eval = F}
+if(!file.exists("rds/gst_tree_ml_noboot.rds")){
+  gst_tree_ml_noboot <- phangorn::phyDat(as(ara_gst_aln, "matrix"),
+                                         type="AA") %>% 
+    phangorn::dist.ml() %>% 
+    phangorn::NJ() %>% 
+    phangorn::pml(data = phangorn::phyDat(as(ara_gst_aln, "matrix"),
+                                          type="AA"), model = "WAG") %>% 
+    optim.pml(optNni = T, optEdge = T)
+  gst_tree_ml_noboot %>% write_rds("rds/gst_tree_ml_noboot.rds")
+}
+gst_tree_ml_noboot <- read_rds("rds/gst_tree_ml_noboot.rds")
+
+if(!file.exists("rds/gst_boot.rds")){
+gst_boot <- bootstrap.pml(gst_tree_ml_noboot, bs = 1000, multicore = T, mc.cores = 20,optNni=T)
+gst_boot %>% write_rds("rds/gst_boot.rds") 
+}
+gst_boot  <-  read_rds("rds/gst_boot.rds") 
+gst_tree_ml <- gst_tree_ml_noboot
+
+gst_tree_ml$tree <- plotBS(gst_tree_ml_noboot$tree,gst_boot,type="n")
+gst_tree_ml %>% write_rds("rds/gst_tree_ml.rds")
+```
+
+```{r}
+gst_tree_ml <- read_rds("rds/gst_tree_ml.rds")
+gst_tree_ml$tree$tip.label <- str_extract(gst_tree_ml$tree$tip.label,"A[Tt][1-5][gG][0-9]+")
+```
+
+### Tree formatting
+
+```{r}
+bh_gst <- read_delim("tables/brazier_hicks_gst.csv", delim=";") %>% 
+  left_join(tair_gsts %>% mutate(name = str_extract(Gene, regex("GS[a-z]+[0-9]+", ignore_case =T))))
+```
+
+
+```{r}
+gsts_apo_momi <- intersect((module_loci %>% filter(Set == "APO_up") %$% GeneId),
+                           (module_loci %>% filter(Set == "MomiB_up") %$% GeneId))
+gst_tree_plotdat <- data.frame(id = gst_tree_ml$tree$tip.label) %>% 
+  group_by(id) %>% 
+  dplyr::mutate(enriched = case_when(id %in% gt1s_apo_momi ~ "Both",
+                              id %in% (module_loci %>% filter(Set == "APO_up") %$% GeneId) ~ "APO",
+                              id %in% (module_loci %>% filter(Set == "MomiB_up") %$% GeneId) ~ "MomiB",
+                              TRUE ~ "No"),
+                in_genesets = case_when(id %in% intersect((bh_gst %$% GeneId), genes_boa) ~ "Brazier-Hicks et al. &\nBaerson et al.", 
+                                         id %in% (bh_gst %$% GeneId) ~ "Brazier-Hicks et al.",
+                                         id %in% genes_boa ~ "Baerson et al.",
+                                      TRUE ~ "No")) %>% 
+  left_join(tair_gsts,by=c("id"="GeneId") )
+
+gst_tree_structure <- gst_tree_ml$tree  %>% root("AT1G77290") %>% treeio::as.phylo()
+gst_groupInfo <- as.list(c(gst_tree_plotdat$id) ) %>% flatten()
+names(gst_groupInfo) <- gst_tree_plotdat$in_genesets
+gst_tree_structure <- groupOTU(gst_tree_structure, gst_groupInfo)
+```
+
+```{r}
+gst_tree_plot <- gst_tree_structure %>%
+  ggtree(layout = 'fan',aes(color = group)) 
+```
+
+### Tree plots
+
+Diagnostic tree for cladelabels
+
+```{r}
+gst_tree_plot %<+% gst_tree_plotdat + geom_nodelab(aes(label=node)) +
+    geom_tiplab2(aes(label = Gene), offset = 0.05)
+```
+
+
+```{r}
+cladelab_offset = 0.2
+gst_tree_plot <-  gst_tree_structure %>%
+  ggtree(layout = 'fan',aes(color = group)) %<+% 
+  gst_tree_plotdat +
+  #geom_tree() +
+  scale_color_manual(values=colors_branches) +
+  ggnewscale::new_scale_color() +
+  geom_tippoint(aes(fill = enriched),pch=21,size=3) +
+  geom_tiplab2(aes(label = Gene), offset = 0.05) +
+  geom_cladelabel(62, "Tau",offset = cladelab_offset+0.25, offset.text = 0.1,align = T) +
+  geom_cladelabel(91, "Lambda",offset = cladelab_offset, offset.text = 0.1, align = T, hjust = 1) +
+  geom_cladelabel(84, "Phi",offset = cladelab_offset, offset.text = 0.1, align = T) +
+  geom_cladelabel(100, "Theta",offset = cladelab_offset, offset.text = 0.1, align = T) +
+  geom_cladelabel(97, "Zeta",offset = cladelab_offset -0.15, offset.text = 0.1, align = T) +
+  geom_cladelabel(98, "Dehydroascorbate\nreductase",offset = cladelab_offset, offset.text = 0.5, align = T) +
+  geom_text2(aes(subset = !isTip, label=label), size = 2.5) +
+  #geom_cladelabel(21, "Tetrachloroqinone\ndehalogenase-\nlike",offset = 1) +
+  # geom_cladelabel()
+  theme_tree() + 
+  theme(text=element_text(family = "NimbusMon",size=8)) +
+  scale_fill_manual(values=c("No" = "#5F5647", "Both" = "#FAEFD1", "APO" =  "#ABDDDE", "MomiB" = "#F8AFA8")) +
+  ggnewscale::new_scale_fill() +
+   NULL
+```
+
+```{r}
+gst_tree_plot +
+  theme(text=element_text(family = "Arial", size=16))
+```
+
+## CYP450
+
+List from here: http://www-ibmp.u-strasbg.fr/~CYPedia/
+
+```{r}
+cyps <- read_delim("arabidopsis_CYPs.csv",";") %>% set_colnames(c("CYP","TopscoredCoExpressed-Path","Score","Description","Links","GeneId","probeset","crosshyb")) %>% 
+  mutate(GeneId = toupper(GeneId)) %>% 
+  mutate(CYP = str_remove(CYP, ","))
+```
+
+```{r}
+apo_cyps <-  module_loci[module_loci$GeneId %in% cyps$GeneId,] %>% 
+  filter(Set == "APO_up") %>% 
+  dplyr::select(GeneId)
+```
+
+
+```{r}
+mom_cyps <- module_loci[module_loci$GeneId %in% cyps$GeneId,] %>% 
+  filter(Set == "MomiB_up") %>% 
+  dplyr::select(GeneId)
+```
+
+```{r}
+found_cyps_ora_both <- rbind(
+apo_cyps %>% 
+  {data.frame(GeneId = .)} %>% 
+  left_join(cyps, by = "GeneId") %>% 
+  mutate(found_in = "APO"),
+mom_cyps %>% 
+  {data.frame(GeneId = .)} %>% 
+  left_join(cyps, by = "GeneId") %>% 
+  mutate(found_in = "MomB")) %>% 
+  dplyr::select(GeneId, CYP,	
+"TopscoredCoExpressed-Path",Description,found_in)
+found_cyps_ora_both %>% 
+  write_csv("found_cyps.csv")
+```
+
+
+```{r}
+intersect(apo_cyps$GeneId,mom_cyps$GeneId) %>% 
+  {data.frame(GeneId = .)} %>% 
+  left_join(cyps, by = "GeneId") %>% 
+    dplyr::select(GeneId, CYP,	
+"TopscoredCoExpressed-Path",Description) %>% 
+  write_csv("overlapping_cyps.csv")
+```
+
+```{r}
+shared_cyps <- apo_cyps %>% filter(GeneId %in% mom_cyps$GeneId)
+shared_cyps %>% write_rds("shared_cyps.rds")
+```
+
+### CYP table
+
+```{r}
+sig_FCs_treated <-  left_join(all_apo_l2fcs %>% 
+                filter(str_detect(Comparison, "APO")) %>%
+                filter(padj < 0.01) %>% 
+                pivot_wider(id_cols = "row", names_from = "Comparison", values_from = "log2FoldChange"),
+              all_momB_l2fcs %>% 
+                filter(str_detect(Comparison, "Mom")) %>%
+                filter(padj < 0.01) %>% 
+                pivot_wider(id_cols = "row", names_from = "Comparison", values_from = "log2FoldChange"))
+found_cyp_table <- bind_rows(list(
+ # shared_cyps %>% mutate(In_Set = "Shared"),
+  apo_cyps %>% 
+   # filter(!GeneId %in% shared_cyps$GeneId) %>% 
+    mutate(In_Set = "APO"),
+  mom_cyps %>% 
+   # filter(!GeneId %in% shared_cyps$GeneId) %>%
+    mutate(In_Set = "Momilactone B"))) %>%
+  left_join(sig_FCs_treated, by = c("GeneId" = "row")) %>% 
+  arrange(GeneId) %>% 
+    unique()
+```
+
+```{r}
+bh_p450s <- data.frame(GeneId = toupper(c("At3g26220", "At3g26830", "At4g37370", 
+                              "At3g28740", "At5g57220", "At4g37410", 
+                              "At5g67310", "At4g37310", "At4g31970", 
+                              "At1g64900", "At1g64940", "At3g14620", 
+                              "At3g14660", "At3g14680", "At3g14690",
+                              "At2g46950", "At4g19230", "At5g58860", 
+                              "At5g23190", "At5g08250", "At2g34500")))
+```
+
+```{r}
+found_cyp_table <- found_cyp_table %>% 
+  mutate(Found_In = case_when(GeneId %in% intersect((bh_p450s %$% GeneId), genes_boa) ~
+                                          "Brazier-Hicks et al. &\nBaerson et al.", 
+                              GeneId %in% (bh_p450s %$% GeneId) ~ "Brazier-Hicks et al.",
+                              GeneId %in% genes_boa ~ "Baerson et al.",
+                                      TRUE ~ "-"))
+```
+
+
+
+```{r}
+found_cyp_table %>% 
+  left_join(cyps) %>% 
+  dplyr::select(CYP, GeneId, In_Set, `Also found in` = Found_In) %>%
+  mutate(CYP = str_extract(CYP,"CYP[0-9]+[A-Z][0-9]+")) %>% 
+  unique() %T>% 
+  write_rds("cyp_table.rds") %>% 
+  arrange(CYP) %>% 
+  group_by(In_Set) %>% 
+  gt::gt() %>% 
+  gt::tab_header(title = "Differentially expressed CYP450s") %>% 
+  gt::tab_style(
+    style = list(
+      gt::cell_text(weight = "bold")),
+    locations = gt::cells_body(
+      columns = c("GeneId","CYP"),
+      rows = GeneId %in% shared_cyps$GeneId )) %>%
+  gt::tab_footnote("CYPs found in both datasets in bold",
+                   locations = gt::cells_column_labels(columns = c(GeneId))) %>% 
+  gt::gtsave("CYP_table.html")
+```
+
+
+```{r}
+found_cyps_modules <-  rbind(APO_up_genes_from_modules[APO_up_genes_from_modules$genes %in% cyps$GeneId,"genes"] %>% 
+        {data.frame(GeneId =.)} %>%
+        mutate(In_Up_Modules = "APO"),
+mom_up_genes_from_modules[mom_up_genes_from_modules$genes %in% cyps$GeneId,"genes"] %>%
+  {data.frame(GeneId =.)} %>% 
+  mutate(In_Up_Modules = "momi"))
+```
+
+
+
+
+#### Align
+
+```{r}
+cyp_rows <- prot_names[prot_names$GeneId %in% toupper(cyps$GeneId),] %>% 
+  group_by(GeneId) %>% summarize(row = min(rownum)) %$% row
+```
+
+```{r}
+ara_cyp_seqs <- athaliana_proteins[cyp_rows,]
+```
+
+```{r message = F}
+ara_cyp_aln <- DECIPHER::AlignSeqs(ara_cyp_seqs)
+```
+
+```{r}
+ara_cyp_aln <- DECIPHER::AdjustAlignment(ara_cyp_aln)
+```
+
+#### Tree
+
+```{r eval = F}
+ara_cyp_aln <- read_rds("rds/ara_cyp_aln.rds")
+if(!file.exists("rds/cyp_tree_ml_noboot.rds")) {
+cyp_tree_ml_noboot <- phangorn::phyDat(as(ara_cyp_aln, "matrix"),
+                                       type="AA") %>% 
+  phangorn::dist.ml() %>% 
+  phangorn::NJ() %>% 
+  phangorn::pml(data = phangorn::phyDat(as(ara_cyp_aln, "matrix"),
+                                        type="AA"), model = "WAG") %>% 
+  optim.pml(optNni = T, optEdge = T)
+cyp_tree_ml_noboot %>% write_rds("rds/cyp_tree_ml_noboot.rds")
+}
+cyp_tree_ml_noboot <- read_rds("rds/cyp_tree_ml_noboot.rds")
+
+if(!file.exists("rds/cyp_boot.rds")) {
+cyp_boot <- bootstrap.pml(cyp_tree_ml_noboot, bs = 1000, multicore = T, mc.cores = 20, optNni=T)
+cyp_boot %>% write_rds("rds/cyp_boot.rds") 
+}
+
+cyp_boot <- read_rds("rds/cyp_boot.rds") 
+
+cyp_tree_ml <- cyp_tree_ml_noboot
+cyp_tree_ml$tree <- plotBS(cyp_tree_ml_noboot$tree,cyp_boot,type="n")
+cyp_tree_ml %>% write_rds("rds/cyp_tree_ml.rds")
+```
+
+```{r}
+cyp_tree_ml <- read_rds("rds/cyp_tree_ml.rds")
+cyp_tree_ml$tree$tip.label <- str_extract(cyp_tree_ml$tree$tip.label,"A[Tt][1-5][gG][0-9]+")
+```
+
+##### Format
+
+```{r}
+cyp_tree_structure <- cyp_tree_ml$tree %>% 
+  ## Root at CYP74A
+  root("AT5G42650") %>%
+  treeio::as.phylo()
+
+cyp_tree_group <- split(cyp_tree_ml$tree$tip.label, gsub("_\\w+", "",
+                                                    cyp_tree_ml$tree$tip.label))
+cyp_tree_structure <- groupOTU(cyp_tree_structure, cyp_tree_group)
+```
+
+Brazier-Hicks p450 from Brazier Hicks S4
+
+```{r}
+bh_p450s <- data.frame(GeneId = toupper(c("At3g26220", "At3g26830", "At4g37370", 
+                              "At3g28740", "At5g57220", "At4g37410", 
+                              "At5g67310", "At4g37310", "At4g31970", 
+                              "At1g64900", "At1g64940", "At3g14620", 
+                              "At3g14660", "At3g14680", "At3g14690",
+                              "At2g46950", "At4g19230", "At5g58860", 
+                              "At5g23190", "At5g08250", "At2g34500")))
+cyp_apo_momi <- intersect((module_loci %>% filter(Set == "APO_up") %$% GeneId),
+                          (module_loci %>% filter(Set == "MomiB_up") %$% GeneId))
+cyp_tree_plotdat <- data.frame(id = cyp_tree_ml$tree$tip.label) %>% 
+  group_by(id) %>% 
+  dplyr::mutate(enriched = case_when(id %in% cyp_apo_momi ~ "Both",
+                              id %in% (module_loci %>% filter(Set == "APO_up") %$% GeneId) ~ "APO",
+                              id %in% (module_loci %>% filter(Set == "MomiB_up") %$% GeneId) ~ "MomiB",
+                              TRUE ~ "No"),
+                in_genesets = case_when(id %in% intersect((bh_p450s %$% GeneId), genes_boa) ~
+                                          "Brazier-Hicks et al. &\nBaerson et al.", 
+                                         id %in% (bh_p450s %$% GeneId) ~ "Brazier-Hicks et al.",
+                                         id %in% genes_boa ~ "Baerson et al.",
+                                      TRUE ~ "No")) %>% 
+  left_join(cyps, by = c("id"= "GeneId")) %>% 
+  mutate(Gene = str_extract(CYP, "[^ ]+")) %>% 
+  mutate(Family = str_extract(CYP, "[A-Z]+[0-9]+"))
+```
+
+
+```{r}
+cyp_groupInfo <- as.list(c(cyp_tree_plotdat$id) ) %>% flatten()
+names(cyp_groupInfo) <- cyp_tree_plotdat$in_genesets
+cyp_tree_structure <- groupOTU(cyp_tree_structure, cyp_groupInfo)
+```
+
+```{r}
+cyp_tree_plot <- cyp_tree_structure %>%
+  ggtree(layout = 'fan',aes(color = group)) 
+```
+
+### Tree plots
+
+Diagnostic tree for cladelabels
+
+```{r}
+cyp_tree_structure %>%
+  ggtree(layout = 'rectangular') %<+% 
+  cyp_tree_plotdat +
+    geom_nodelab(aes(label=node)) +
+  geom_tiplab(aes(label = Gene, color =Family)) + theme(legend.position = "none")
+```
+
+
+```{r}
+set.seed(54321)
+cyp_tree_plot <- cyp_tree_structure %>%
+  ggtree(layout = 'fan',aes(color = group),) 
+cyp_tree_plot <- cyp_tree_plot  %<+% cyp_tree_plotdat +
+  #geom_tree() +
+  scale_color_manual(values=colors_branches) +
+  ggnewscale::new_scale_color() +
+  geom_tippoint(aes(fill = enriched),pch=21,size=3) +
+  geom_tiplab2(aes(label = Gene), offset = 0.1, size=3.5) +
+  # geom_cladelabel()
+  theme_tree() +
+  theme(text=element_text(family = "NimbusMon",size=8)) +
+  scale_fill_manual(values=c("No" = "#5F5647",
+                             "Both" = "#FAEFD1", 
+                             "APO" =  "#ABDDDE",
+                             "MomiB" = "#F8AFA8")) +
+  geom_text2(aes(subset = !isTip & !is.na(as.numeric(label)) & as.numeric(label) > 70, label=label), size = 2.5) +
+  ggnewscale::new_scale_fill() +
+   NULL
+```
+
+```{r}
+cladelab_offset = 0.3
+cyp_tree_plot <- cyp_tree_plot + 
+  # Clan labels
+  geom_cladelabel(405, "CYP71 Clan",offset = cladelab_offset+0.25, offset.text = 0.25,align = T) +
+  geom_cladelabel(303, "CYP72 Clan",offset = cladelab_offset+0.38, offset.text = 0.1,align = T) +
+  geom_cladelabel(394, "CYP86 Clan",offset = cladelab_offset+0.52, offset.text = 0.3,align = T) +
+  geom_cladelabel(401, "CYP97 Clan",offset = cladelab_offset+0.25, offset.text = 0.1,align = T) +
+  geom_cladelabel(475, "CYP710 Clan",offset = cladelab_offset, offset.text = 0.1,align = T) +
+  geom_cladelabel(361, "CYP85 Clan",offset = cladelab_offset+0.27, offset.text = 0.1,align = T) +
+  theme(plot.margin = unit(c(-25, -25, -25, -25), "mm")) +
+  NULL
+```
+
+```{r}
+cyp_tree_plot +
+  theme(text = element_text("Arial", size = 16))
+```
+
+# Transporters
+
+```{r}
+shared_transporters <- intersect(plotdat_APO_GO %>% 
+  filter(str_detect(GeneSet, "transport")) %>%
+  dplyr::select(geneID, GeneSet) %>%
+  unique %>% 
+  mutate(genes = str_extract_all(geneID, "[ATMG0-9]+")) %>% 
+  unnest(cols = c(genes)) %>% 
+  .$genes %>% 
+  unique() ,
+plotdat_mom_GO %>% 
+  filter(str_detect(GeneSet, "transport")) %>%
+  dplyr::select(geneID, GeneSet) %>%
+  unique %>% 
+  mutate(genes = str_extract_all(geneID, "[ATMG0-9]+")) %>% 
+  unnest(cols = c(genes)) %>% 
+  .$genes %>% 
+  unique() )
+
+transporters_table <- bind_rows(list(plotdat_APO_GO %>% 
+  filter(str_detect(GeneSet, "transport")) %>%
+  dplyr::select(geneID, GeneSet) %>%
+  unique %>% 
+  mutate(genes = str_extract_all(geneID, "[ATMG0-9]+")) %>% 
+  unnest(cols = c(genes)) %>% 
+  dplyr::select(-geneID, -GeneSet) %>% 
+  unique() %>% 
+  mutate(GeneId = genes, In_Set = "APO"),
+plotdat_mom_GO %>% 
+  filter(str_detect(GeneSet, "transport")) %>%
+  dplyr::select(geneID, GeneSet) %>%
+  unique %>% 
+  mutate(genes = str_extract_all(geneID, "[ATMG0-9]+")) %>% 
+  unnest(cols = c(genes)) %>% 
+    dplyr::select(-geneID,-GeneSet) %>% 
+  unique() %>% 
+  mutate(GeneId = genes, In_Set = "Momilactone B"))) %>% 
+  left_join(araGenome %>% dplyr::select(GeneId = ensembl_gene_id, description))
+```
+
+
+```{r}
+transporters_table %>% 
+  dplyr::select(GeneId, In_Set, description) %>%
+  mutate(Description = description %>% str_extract("[A-Za-z0-9\\-/ ]*")) %>% 
+  dplyr::select(-description) %>% 
+  dplyr::arrange(Description) %T>%
+  write_rds("rds/transporters_table.rds") %>% 
+  group_by(In_Set) %>%  
+  gt::gt() %>% 
+  gt::tab_header(title = "Differentially expressed Transporters") %>% 
+  gt::tab_style(
+    style = list(
+      gt::cell_text(weight = "bold")),
+    locations = gt::cells_body(
+      columns = c("GeneId","Description"),
+      rows = GeneId %in% shared_transporters )) %>%
+  gt::tab_footnote("Transporters found in both datasets in bold",
+                   locations = gt::cells_column_labels(columns = c(GeneId))) 
+```
+# Down
+
+## APO
+
+```{r}
+APO_down_genes_from_module10 <- cem_APO@module %>% 
+    dplyr::filter(modules %in% c("M10")) %>% 
+    left_join(all_apo_l2fcs, by = c("genes"="row")) %>% 
+    dplyr::filter(str_detect(Comparison, "APO")) %>% 
+    dplyr::filter(log2FoldChange < 0) %>% 
+    dplyr::filter(padj_global < 0.01) %>% 
+    dplyr::select(genes) %>% 
+    unique() 
+APO_module10_ORA <- clusterProfiler::enricher(APO_down_genes_from_module10$genes,
+                          TERM2GENE = tair_go %>% 
+                              filter(aspect == "F") %>%
+                              dplyr::select( GO_ID,GeneId) %>%
+                              unique %>%
+                              set_colnames(c("term","gene")))
+APO_module10_ORA@result %>% 
+  left_join(AnnotationDbi::select(GO.db::GO.db,
+                                  keys = APO_module10_ORA$ID,
+                                  columns=AnnotationDbi::columns(GO.db::GO.db)), by = c("ID" = "GOID")) %>% 
+  filter(p.adjust < 0.05)
+```
+
+```{r}
+"AT5G06640/AT1G12040/AT4G13390/AT5G06630/AT5G35190/AT2G24980/AT4G08410" %>% 
+  str_split("/", simplify = T) %>% 
+  .[1,] %>% 
+  {filter(araGenome, ensembl_gene_id %in% .)}
+
+```
+AT1G12040 is LRX1
+AT5G06630 is EXT9
+AT4G08410 is EXT8
+AT2G24980 is EXT6
+AT4G13390 is EXT12
+AT5G35190 is EXT13
+AT5G06640 is EXT10
+
+```{r}
+"AT4G26010/AT5G67400/AT5G22410/AT1G34510" %>% 
+  str_split("/", simplify = T) %>% 
+  .[1,] %>% 
+  {filter(araGenome, ensembl_gene_id %in% .)}
+```
+```{r}
+"AT4G25820/AT4G28850/AT5G57530/AT5G57540" %>% 
+  str_split("/", simplify = T) %>% 
+  .[1,] %>% 
+  {filter(araGenome, ensembl_gene_id %in% .)}
+```
+
+
+```{r}
+plotdat_APO_A10 <- rbind(APO_module10_ORA@result %>%
+                                   left_join(AnnotationDbi::select(GO.db::GO.db,
+                                                                  keys = APO_module10_ORA$ID,
+                                                                  columns=AnnotationDbi::columns(GO.db::GO.db)),
+                                             by = c("ID" = "GOID")) %>% 
+  filter(p.adjust < 0.01) %>% 
+  rowwise %>% 
+  mutate(Obs_ratio = eval(parse(text = GeneRatio)),
+         Exp_ratio = eval(parse(text = BgRatio))) %>% 
+  ungroup() %>% 
+  pivot_longer(contains("_ratio"), values_to ="Ratio", names_to = "Representation") %>% 
+  mutate(Representation = case_when(str_detect(Representation,"Obs") ~"In Set", 
+                                    TRUE ~ "Background"))) %>% 
+  unique() %>% 
+  mutate(GeneSet = TERM %>%
+           as.character() %>% 
+           str_remove_all("\\(Arabidopsis\\)") %>% 
+           str_remove_all("<i>") %>%
+           str_replace_all("</\ni>","\n") %>%  
+           str_replace_all("biosynthe...","biosynthesis") %>% 
+           str_wrap(width = 30)) %>% 
+  #mutate(GeneSet = GeneSet %>% as.factor() %>% fct_reorder((-log10(p.adjust)))) 
+  mutate(GeneSet = GeneSet %>% as.factor() %>% fct_reorder(Ratio, max)) %>% 
+  filter(!str_detect(TERM, "peroxidase"))
+
+plot_overrep_APO_A10 <- plotdat_APO_A10 %>% 
+  ggplot(aes(x=GeneSet, y=Ratio, 
+             group = Representation)) +
+  geom_linerange(aes(xmax=GeneSet, ymin=0, ymax=Ratio, color = Representation),size = 2,alpha =0.7) +
+  geom_point(aes(x=GeneSet,fill=-log10(p.adjust)),
+             pch=21, 
+             data = plotdat_APO_A10[plotdat_APO_A10$Representation == "In Set",],
+             position = position_dodge(width = 0.20),
+             size = 5) +
+  scale_fill_gradient(low = "#EAD3BF", high = "#9986A5",name = "-log10(adjusted p)", limits = c(1,15) ) +
+  theme_bw() +
+  ggthemes::scale_color_solarized() +
+  theme(panel.grid.major.y = element_blank(),
+        legend.position = "bottom",
+        text = element_text(family = "Arial", size = 16)) +
+  #scale_fill_gradientn(colours = cm.colors(10)) +
+  labs(title="Downregulated genes in A10", x="") +
+  coord_flip() +
+  #facet_grid(~Module,scales = "free")+
+  NULL
+plot_overrep_APO_A10
+```
+
+
+## Momi
+
+```{r}
+momi_down_genes_from_modules <- cem_momi@module %>% 
+    dplyr::filter(modules %in% c("Not.Correlated")) %>% 
+    left_join(all_momB_l2fcs, by = c("genes"="row")) %>% 
+    dplyr::filter(str_detect(Comparison, "Mom")) %>% 
+    dplyr::filter(log2FoldChange < 0) %>% 
+    dplyr::filter(padj_global < 0.01) %>% 
+    dplyr::select(genes) %>% 
+    unique()
+```
+
+```{r}
+momi_down_genes_from_modules
+```
+
+```{r}
+momi_ORA_GO_down <- clusterProfiler::enricher(momi_down_genes_from_modules$genes,
+                                                    TERM2GENE = tair_go %>% 
+                                                                filter(aspect == "F") %>%
+                                                                dplyr::select( GO_ID,GeneId) %>%
+                                                                unique %>%
+                                                                set_colnames(c("term","gene"))) 
+```
+
+```{r}
+momi_ORA_GO_down@result %>% left_join(AnnotationDbi::select(GO.db::GO.db,
+                                                      keys = momi_ORA_GO_down$ID,
+                                                      columns=AnnotationDbi::columns(GO.db::GO.db)), by = c("ID" = "GOID")) %>% 
+  filter(p.adjust < 0.05) 
+```
+
+```{r}
+plotdat_momi_GO_down <- rbind(momi_ORA_GO_down@result %>%
+                                   left_join(AnnotationDbi::select(GO.db::GO.db,
+                                                                  keys = momi_ORA_GO_down$ID,
+                                                                  columns=AnnotationDbi::columns(GO.db::GO.db)),
+                                             by = c("ID" = "GOID")) %>% 
+  filter(p.adjust< 0.01) %>% 
+  rowwise %>% 
+  mutate(Obs_ratio = eval(parse(text = GeneRatio)),
+         Exp_ratio = eval(parse(text = BgRatio))) %>% 
+  ungroup() %>% 
+  #filter(Obs_ratio >= 0.01) %>% 
+  pivot_longer(contains("_ratio"), values_to ="Ratio", names_to = "Representation") %>% 
+  mutate(Representation = case_when(str_detect(Representation,"Obs") ~"In Set", 
+                                    TRUE ~ "Background"))) %>% 
+  #filter(p.adjust < 0.001) %>% 
+  unique() %>% 
+  mutate(GeneSet = TERM %>%
+           as.character() %>% 
+           str_remove_all("\\(Arabidopsis\\)") %>% 
+           str_remove_all("<i>") %>%
+           str_replace_all("</\ni>","\n") %>%  
+           str_replace_all("biosynthe...","biosynthesis") %>% 
+           str_wrap(width = 30)) %>% 
+  #mutate(GeneSet = GeneSet %>% as.factor() %>% fct_reorder((-log10(p.adjust)))) 
+  mutate(GeneSet = GeneSet %>% as.factor() %>% fct_reorder(Ratio, max)) 
+
+plot_overrep_momi_GO_down <- plotdat_momi_GO_down %>% 
+  ggplot(aes(x=GeneSet, y=Ratio, 
+             group = Representation)) +
+  geom_linerange(aes(xmax=GeneSet, ymin=0, ymax=Ratio, color = Representation),size = 2,alpha =0.7) +
+  geom_point(aes(x=GeneSet,fill=-log10(p.adjust)),
+             pch=21, 
+             data = plotdat_momi_GO_down[plotdat_momi_GO_down$Representation == "In Set",],
+             position = position_dodge(width = 0.20),
+             size = 5) +
+  scale_fill_gradient(low = "#EAD3BF", high = "#9986A5",name = "-log10(adjusted p)",limits = c(1,15)  ) +
+  theme_bw() +
+  ggthemes::scale_color_solarized() +
+  theme(panel.grid.major.y = element_blank(),
+        legend.position = "bottom",
+        text = element_text(family = "Arial", size = 16)) +
+  #scale_fill_gradientn(colours = cm.colors(10)) +
+  labs(title="Momilactone B downregulated genes",x="") +
+  coord_flip() +
+  #facet_grid(~Module,scales = "free")+
+  NULL
+plot_overrep_momi_GO_down
+```
+
+```{r}
+plot_overrep_APO_A10 /
+  plot_overrep_momi_GO_down +
+  plot_layout(guides = "collect") & theme(legend.position = "bottom", text=element_text(family = "Arial",size = 14)) 
+```
+
+# Sessioninfo
+
+```{r}
+sessionInfo()
+```
+
+

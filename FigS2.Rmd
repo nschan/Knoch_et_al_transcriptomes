@@ -1,0 +1,35 @@
+---
+title: "Figure S2"
+author: "Niklas Schandry"
+output: pdf_document:
+  toc: TRUE
+  
+---
+
+```{r setup, message = F}
+library(tidyverse)
+library(magrittr)
+library(patchwork)
+library(wesanderson)
+```
+
+```{r}
+read_csv("momi_measurements.csv") %>% 
+  ggplot(aes(x = Momilactone, y = log10(pg_per_mg+1e0))) +
+  geom_boxplot(aes(fill = organism), position = "dodge") +
+  theme_bw() +
+  theme(text=element_text(family = "Arial",
+                          size =16),
+        strip.background = element_blank()) +
+  scale_fill_manual(values = rev(wesanderson::wes_palette("Darjeeling2",2)[1:2])) +
+  scale_y_continuous(labels = c("Not\nDetected", "10","100","1000")) +
+  labs(title = "Momilactone measurements",
+       x = element_blank(), y = "pg/mg") +
+  theme(legend.title = element_blank())
+```
+
+```{r}
+read_csv("momi_measurements.csv") %>% 
+  group_by(organism, Momilactone) %>% tally() 
+```
+

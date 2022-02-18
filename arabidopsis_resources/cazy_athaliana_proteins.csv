@@ -1,0 +1,1191 @@
+﻿Name;Family
+"UDP-Glc:phenol β-glucosyltransferase (At2g29740; UGT71C2)";GT1
+"α,α-trehalose-6-phosphate synthase (Tps1;AtTPS1;At1g78580)";GT20
+"α-1,2-glucosidase / α-glucosidase I (Gcs1;KNF;KNOPF;At1g67490 )";GH63
+"α-1,2-L-fucosidase (Axy8;AXY8;At4g34260)";GH95
+"α-1,2-mannosidase (Mns4;At5g43710)";GH47
+"α-1,2-mannosidase (Mns5;At1g27520)";GH47
+"α-1,2-mannosidase I (Mns1;ManIb;AtMANIb;At1g51590) (Golgi)";GH47
+"α-1,2-mannosidase I (Mns2;ManIa;AtMANIa;At3g21160) (Golgi)";GH47
+"α-1,2-mannosidase I (Mns3;At1g30000) (ER)";GH47
+"α-1,3-L-fucosidase 1 (AtFUC1;At2g28100)";GH29
+"α-1,4-fucosyltransferase (Fut13;FT4-M;FucTC;At1g71990)";GT10
+"α-amylase (AMY3;AtAMY3;At1g69830)";CBM45,CBM45,GH13
+"α-amylase (AtAmy1;At4g25000) (apoplast)";GH13
+"α-glucan phosphorylase (PHS2;AtPHS2;At3g46970)";GT35
+"α-glucosidase / α-xylosidase (AtXyl1;AXY3;AtGlu2;Aglu2;Aglu-2;At1g68560)";GH31
+"α-glucosidase 1 (Aglu1;Aglu-1;At5g11720)";GH31
+"α-glucosidase II (Rsw3;Aglu3;Aglu-3;At5g63840)";GH31
+"α-L-arabinofuranosidase / β-1,4-xylosidase (Xyl3;AtBX3;At5g09730)";GH3
+"α-L-arabinofuranosidase / β-D-xylosidase (Xyl1;BXL1;AtBXL1;At5g49360)";GH3
+"α-L-arabinofuranosidase / β-xylosidase (Asd1;AraF1;At3g10740)";GH51
+"α-mannosidase (LMann;AtLMann;At3g26720)";GH38
+"α-mannosidase II (AtGMII;At5g14950)";GH38
+"α-N-acetylglucosaminidase (NAGLU;At5g13690)";GH89
+β-1,2-N-acetylglucosaminyltransferase II (At2g05320);GT16
+"β-1,3-endoglucanse (PR2;At4g16260)";GH17
+"β-1,3-galactan β-1,3-galactosyltransferase (At1g22015; GalT8)";GT31
+"β-1,3-glucanase (At5g42100/MJC20.21;ppap) (plasmodesmal)";GH17
+"β-1,4-mannan synthase / glucomannan synthase (CslA1;At4g16590/dl4320w)";GT2
+"β-1,4-mannan synthase / glucomannan synthase (CslA2;At5g22740/MDJ22.16)";GT2
+"β-1,4-mannan synthase / glucomannan synthase (CslA7;At2g35650/T20F21.16)";GT2
+"β-1,4-mannan synthase / glucomannan synthase (CslA9;At5g03760/F17C15_180)";GT2
+"β-amylase (BAM1;BMY7;TR-BAMY;At3g23920)";GH14
+"β-amylase (BAM2;BMY9At4g00490)";GH14
+"β-amylase (BAM3;ct-Bmy;BMY8;At4g17090)";GH14
+"β-amylase (BAM5;Ram1;Atβ-Amy;BMY1;At4g15210)";GH14
+"β-galactosidase (Bgal12;Gal-12;At4g26140)";GH35
+"β-galactosidase (Bgal1;Gal-1;At3g13750)";GH35
+"β-galactosidase (Bgal2;Glα-2;At3g52840)";GH35
+"β-galactosidase (Bgal3;Gal-3;At4g36360)";GH35
+"β-galactosidase (Bgal4;Gal-4;AtBGAL4;At5g56870)";GH35
+"β-galactosidase (Bgal5;Gal-5;At1g45130)";GH35
+"β-galactosidase (Bgal6;Mum2;At5g63800)";GH35
+"β-glucosidase (Sfr2;At3g06510)";GH1
+"β-glucuronidase (GUS2;AtGus2;At5g07830)";GH79
+"β-mannanase 2 (AtMan2;AtMan5-2;At2g20680)";GH5
+"β-mannosidase/β-glucosidase (Bglu44;At3g18080)";GH1
+"β-N-acetylhexosaminidase (Hexo3;AtHex3;At1g65590) (plasma membrane)";GH20
+"β-N-acetylhexosaminidase 1 (Hexo1;AtHex2;At3g55260) (vacuolar)";GH20
+"β-N-acetylhexosaminidase 2 (Hexo2;AtHex1;At1g05590) (plasma membrane)";GH20
+"β-xylosidase (Xyl4;AtBXL4;At5g64570)";GH3
+"(gluco)mannan synthase (CslD2;At5g16910)";GT2
+"(gluco)mannan synthase (KOJAK;CslD3;At3g03050)";GT2
+"2,5-DHBA-, 3,4-DHBA, 2,4-DHBA- and 4-HBA-β-glucosyltransferase (At3g21750; UGT71B1)";GT1
+"3,4-DHBA- and 2,5-DHBA-β-glucosyltransferase (UGT71C4; At1g07250)";GT1
+"3,4-DHBA- and 2,5-DHBA-β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At2g15490; UGT73B4)";GT1
+"3,4-DHBA-, 4-HBA-, 2,4-DHBA- and 2,5-DHBA-β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At1g73880; UGT89B1)";GT1
+"4-α-glucanotransferase (Dpe1;AtDPE1;At5g64860/MXK3.9) (plastidial)";GH77
+"4-α-glucanotransferase (Dpe2;Dpe2-1;At2g40840/T20B5.4) (cytosolic)";CBM20,CBM20,GH77
+"4-HBA-β-glucosyltransferase (AtUGT75B2;At1g05530)";GT1
+?-(1,3)-galactan synthase (At1g33430);GT31
+"alkaline α-galactosidase (Sip2;AtSip2;At3g57520)";GH36
+"alkaline/neutral invertase (A/N-InvA;At1g56560) (mitochondrial)";GH100
+"alkaline/neutral invertase (A/N-InvC;At3g06500) (mitochondrial)";GH100
+"alkaline/neutral invertase (CInv1;CwINV1;CYT-INV1;A/N-InvG;At1g35580) (cytosolic)";GH100
+"anthocyanin 5-O-glucosyltransferase (UGT75C1;At4g14090)";GT1
+"arabinofuranosyltransferase (Ray1;AtRAY1;At1g70630)";GT77
+"arabinosyltransferase (Rra1;RRA1;At1g75120)";GT77
+"arabinosyltransferase (Rra2;RRA2;At1g75110)";GT77
+At1g01390/F6F3.19 (UGT72B2);GT1
+At1g01570;GT31
+AT1G02145;GT22
+At1g02360;GH19
+At1g02460;GH28
+At1g02640 (Bxl2);GH3
+At1g02720/T14P4.1;GT8
+"At1g02790 (exopolygalacturonase-1;PGA3)";GH28
+At1g02810/F22D16.20;CE8
+"At1g02850 (Bglu11;AtBGLU11)";GH1
+"At1g03310 (chloroplastic isoamylase 2;AtISA2;Iso1 subunit;DBE1)";CBM48,GH13
+At1g03520;GT14
+At1g04680;PL1
+AT1G04910;GT106
+At1g04920/F13M7.9;GT4
+AT1G05150;GTnc
+At1g05170;GT31
+At1g05280;GT31
+At1g05310/YUP8H12.7;CE8
+At1g05650;GH28
+At1g05660;GH28
+AT1G05675 (UGT74E1);GT1
+At1g05680/F3F20.13 (UGT74E2);GT1
+"At1g05850 (Ctl1;Hot2;Elp1;Pom1;CHITINASE-LIKE1;POM-POM1)";GH19
+At1g06410;GT20
+At1g06780/F4H5.13 (Gaut6);GT8
+At1g07220;GT90
+At1g07850;GT31
+AT1G08040;GTnc
+At1g08990/F7G19.14;GT8
+"At1g09010/F7G19.12 (mannosylglycoprotein endo-β-mannosidase; AtEBM)";GH2
+At1g09020/F7G19_11/AKINbg;CBM48
+At1g09350/F14J9.1 (galactinol synthase AtGolS3);GT8
+At1g09460;CBM43
+At1g09550 (fragment);CE13
+At1g09880;PL4
+At1g09890;PL4
+At1g09910 (Myst4);PL4
+At1g10050;CBM22,CBM22,CBM22,CBM22,GH10
+At1g10280;GTnc
+At1g10400/F14N23. (UGT90A2);GT1
+At1g10550;GH16
+At1g10640;GH28
+"At1g10760/T16B5.10 (Gwd;Gwd1)";CBM45,CBM45
+AT1G10880;GTnc
+AT1G11170;GTnc
+At1g11370/T23J18.3;CE8
+At1g11545;GH16
+At1g11580/T23J18_33;CE8
+At1g11590/T23J18.25;CE8
+At1g11730;GT31
+At1g11820;GH17,CBM43
+At1g11880;GT76
+At1g11920;PL1
+At1g11940;GTnc
+AT1G11990;GT106
+At1g12990;GT17
+AT1G13000;GTnc
+At1g13130;GH5
+At1g13250/T6J4.1;GT8
+At1g13830;CBM43
+At1g14070;GT37
+At1g14100;GT37
+At1g14110;GT37
+At1g14420;PL1
+AT1G14430;AA5
+At1g14590/T5E21.9;GT77
+At1g14720 (xyloglucan endotransferase XTR2);GH16
+AT1G14970;GT106
+At1g16570;GT33
+At1g16900/F6I1.10;GT22
+At1g16980;GT20
+At1g17000;GT20
+At1g17150;GH28
+At1g17270;GTnc
+AT1G18140 (Lac1);AA1
+AT1G18250 (Atlp-1);GH152
+At1g18310;GH81
+At1g18580/F25I16.8 (Gaut11);GT8
+At1g18650;CBM43
+At1g19170;GH28
+"At1g19300/F18O14_13 (Glz1;Parvus;Parvus-3;GATL1)";GT8
+AT1G19320;GH152
+At1g19710/F6F9.24;GT4
+AT1G19900;AA5
+AT1G20030;GH152
+AT1G20550;GT106
+At1g20575/F2D10.6;GT2
+At1g21480/F24J8_23;GT47
+At1g22340/T16E15.5 (UGT85A7);GT1
+At1g22380 (UGT85A3);GT1
+AT1G22460;GT106
+At1g22650;GH100
+At1g23200;CE8
+At1g23460;GH28
+At1g23470 (fragment);GH28
+At1g23480/F28C11.11;GT2
+At1g23870;GT20
+At1g24070/T23E23.23;GT2
+At1g24170/F3I6.10;GT8
+At1g24320/F3I6.26;GH63
+AT1G24570;GTnc
+At1g24793;CE11
+At1g24880;CE11
+At1g25054 (fragment);CE11
+AT1G25210 (possible fragment);CE11
+At1g26450;CBM43
+At1g26560 (Bglu40);GH1
+AT1G27070;CBM48
+At1g27120 (GALT4);GT31
+At1g27200;GTnc
+"At1g27440 (Irx10;AtGUT2)";GT47
+AT1G28240;GTnc
+AT1G28340 (Rlp4);CBMnc
+At1g28695;GT77
+At1g28700/F1K23.10;GT77
+At1g28710/F1K23.9;GT77
+AT1G29200;GT106
+At1g29380;CBM43
+At1g30080/T1P2.13;GH17
+At1g30350;PL1
+At1g31740 (Bgal15);GH35
+At1g32170 (XTR4 );GH16
+At1g32180/F3C3.4;GT2
+At1g32860/F9L11.6;GH17
+At1g32900/F9L11.8;GT5
+At1g33220/T9L6.8 or T16O9.3;GH17
+At1g33250;GT31
+At1g33700;GH116
+At1g34130/F12G12.5;GT66
+At1g34270;GT47
+AT1G34550;GTnc
+AT1G35510;GT106
+AT1G38065;GT106
+AT1G38131;GT106
+At1g43080;GH28
+At1g43090;GH28
+At1g43100;GH28
+At1g43620/T10P12.7;GT1
+At1g44980 (AtPME7) (possible fragment);CE8
+"At1g45191 (Bglu1;AtBGLU1)";GH1
+At1g49710/F14J22.8;GT10
+At1g50580 (UGT79B5);GT1
+At1g51210/F11M15.8;GT1
+"At1g51490 (TGG6; Bglu36)";GH1
+AT1G51630;GT106
+At1g51770;GTnc
+At1g52420/F6D8.36 or F19K6.13;GT4
+At1g52630;GT106
+AT1G53040;GTnc
+At1g53100;GT14
+At1g53290;GT31
+At1g53770;GTnc
+At1g53830/T18A20_6 (PME2);CE8
+At1g53840/T18A20.7 (PME1);CE8
+At1g54940/T24C10.6 or F14C21.11;GT8
+"At1g55120 (6-FEH;AtcwINV3)";GH32
+At1g55740;GH36
+At1g55850/F14J16.9;GT2
+At1g56600/F25P12.95 (galactinol synthase AtGolS2);GT8
+At1g56680;CBM18,GH19
+At1g56710;GH28
+At1g57590;CE13
+"At1g58370 (RXF12;Xyn1)";CBM22,CBM22,CBM22,GH10
+"At1g60090 (Bglu4;AtBGLU4)";GH1
+"At1g60140 (trehalose-6-phosphate synthase 3;Tps3)";GT20
+"At1g60260 (Bglu5;AtBGLU5)";GH1
+"At1g60270 (Bglu6;AtBGLU6)";GH1
+At1g60450/T13D8.32 (water stress-induced protein);GT8
+At1g60470/F8A5.2 (water stress-induced protein);GT8
+At1g60590;GH28
+At1g61050;GT32
+At1g61240;GTnc
+At1g62305;GTnc
+AT1G62330;GT106
+"At1g62660 (invertase;AtBFruct3;Fruct3;AtcwINV2)";GH32
+At1g63420;GT90
+At1g63450 (GT16);GT47
+At1g64760;GH17,CBM43
+At1g64910/F13O11.21;GT1
+At1g64920/F13O11.22;GT1
+AT1G65210 (fragment);PL4
+At1g65310 (Xth-17);GH16
+At1g65570;GH28
+At1g66250;GH17,CBM43
+AT1G66852;CBM43
+AT1G66855;CBM43
+At1g66870;CBM43
+AT1G67290 (Glox1);AA5
+At1g67410;GT47
+At1g67750;PL1
+"At1g67830/F12A21.4 (α-fucosidase 2;FXG1)";GHnc
+AT1G67850;GTnc
+At1g67880;GT17
+At1g68020;GT20
+At1g68380;GTnc
+At1g68390;GTnc
+At1g68470 (GT17);GT47
+At1g69295;CBM43
+At1g70090/F20P5.18;GT8
+AT1G70250;GH152
+"At1g70290 (trehalose-6-phosphate synthase 2;Tps2)";GT20
+At1g70500;GH28
+At1g71070;GT14
+At1g71220/F3I17.13;GT24
+At1g72000;GH100
+At1g72990 (Bgal17);GH35
+At1g73160/F3N23.36 or T18K17.18;GT4
+At1g73370 (Sus6);GT4
+AT1G73620;GH152
+At1g73740;GT28
+At1g73810;GTnc
+At1g74420 (fragment);GT37
+At1g74680;GT47
+At1g74800 (GALT5);GT31
+AT1G75030 (Tlp-3);GH152
+AT1G75040 (Pr5);GH152
+AT1G75050;GH152
+At1g75420/F1B16.5;GT4
+AT1G75620;AA5
+AT1G75800;GH152
+"At1g75940 (ATA27;Bglu20)";GH1
+At1g76130 (AtAMY2);GH13
+AT1G76270;GT106
+"At1g77130/T14N5.1 (PGSIP2;Gux3)";GT8,GT8
+At1g77410 (Bgal16);GH35
+AT1G77700;GH152
+At1g77780/T32E8.11;GH17
+At1g77790/T32E8.12;GH17
+At1g77810.1;GT31
+At1g78060/F28K19.27 (AtBXL7);GH3
+At1g78400;GH28
+At1g78520;CBM43
+At1g78800/F9K20.16;GT4
+At1g79480;CBM43
+At1g80140;GH28
+At1g80170;GH28
+At1g80290/F5I6.4;GT64
+AT2G01480;GT106
+At2g01630;GH17,CBM43
+At2g01850 (xyloglucan endotransferase EXGT-A3);GH16
+At2g02060 (Sos1);GT77
+At2g02720;PL1
+At2g02910;GTnc
+At2g03210 (Fut2);GT37
+AT2G03360;GT61
+At2g03370;GT61
+At2g03505;CBM43
+At2g04060 (fragment);GH35
+At2g04280;GTnc
+At2g04560;GT19
+At2g04910;CBM43
+At2g05790;GH17,CBM43
+At2g06850 (xyloglucan endotransferase EXGT-A1);GH16
+At2g13290;GT17
+At2g14620;GH16
+At2g14690;CBM22,GH10
+At2g15350;GT37
+At2g15370;GT37
+At2g15450;GH28
+At2g15460;GH28
+At2g15470;GH28
+At2g16230;GH17,CBM43
+At2g16730 (Bgal13);GH35
+At2g16890 (UGT90A1);GT1
+AT2G17860;GH152
+At2g18560/F24H14.9;GT1
+At2g18700;GT20
+At2g18800;GH16
+At2g19150/T20K24.17;CE8
+At2g19160;GTnc
+At2g19440;GH17,CBM43
+At2g19880/F6F22.9;GT21
+At2g20810/At2g20807 (Gaut10);GT8
+At2g21610 (AtPME11);CE8
+"At2g21770/F7D8.9 (cellulose synthase A9; CesA9)";GT2
+At2g22590/T9I22.3;GT1
+At2g22900/T20K9.11 (AtGT7);GT34
+At2g22930 (UGT79B8);GT1
+At2g23210/T20D16.16 (fragment);GT1
+At2g23900;GH28
+At2g24630;GT2
+At2g25300 (HPGT3);GT31
+At2g25540;GT2
+At2g25630 (Bglu14);GH1
+At2g26100;GT31
+At2g26440/T9J22.11;CE8
+At2g26450/T9J22.12;CE8
+At2g26480/T9J22.15 (UGT76D1);GT1
+At2g26600/T9J22.27;GH17
+At2g26620;GH28
+At2g27500/F10A12.18;GH17
+At2g28080/F24D13.13 (UGT86A2);GT1
+"At2g28110 (Irx7;Fra8;Fiber8)";GT47
+AT2G28310;GTnc
+At2g28470 (Bgal8);GH35
+AT2G28790;GH152
+At2g29040 (GT11);GT47
+AT2G29130 (Lac2);AA1
+At2g29710;GT1
+AT2G29735;CBM43
+At2g30140 (UGT87A2);GT1
+At2g30150/T27E13.11;GT1
+AT2G30210 (Lac3);AA1
+At2g30575 (Gaut5);GT8
+AT2G30933;CBM43
+At2g31790 (UGT74C1);GT1
+"At2g31960 (CalS3;Gsl03)";GT48
+At2g31990 (GT15);GT47
+At2g32290 (BAM6);GH14
+At2g32430;GT31
+AT2G32450;GTnc
+At2g32530/T26B15.9;GT2
+At2g32540/T26B15.10;GT2
+At2g32610/T26B15.17;GT2
+At2g32620/T26B15.18;GT2
+At2g32740 (GT13);GT47
+At2g32750 (GT12);GT47
+At2g32810 (Bgal9);GH35
+At2g32860 (Bglu33);GH1
+At2g33100/F25I18.16;GT2
+At2g33160;GH28
+"At2g35100 (probable UDP-β-L-Ara: arabinan α-1,5-L-arabinosyltransferase;ARAD1;AtARAD1)";GT47
+At2g35710/T20F21.10;GT8
+At2g36700;CE8
+At2g36710;CE8
+At2g36760/F13K3.16 (UGT73C2);GT1
+"At2g36850 (CalS10;Gsl08)";GT48
+At2g36970;GT1
+At2g37730;GT31
+AT2G37980;GT106
+AT2G38080 (Irx12);AA1
+At2g38150;GT32
+AT2G38152;GT32
+"At2g38650/T6A23.15 (JS33;Gaut7;Lgt7)";GT8
+At2g39630;GT2
+At2g39640;GH17,CBM43,CBM43
+"At2g39930 (chloroplastic isoamylase 2;AtISA1;Iso1 subunit)";CBM48,GH13
+At2g40190;GT4
+At2g40310;GH28
+AT2G40370 (Lac5);AA1
+At2g41150;GTnc
+AT2G41451;GTnc
+At2g41640/T32G6.16;GT61
+AT2G41770;GTnc
+At2g41850 (ADPG2);GH28
+At2g42930;CBM43
+At2g43050;CE8
+"At2g43580 (ChitIV2;AtChitIV2)";CBM18,GH19
+At2g43600;CBM18,GH19
+At2g43620;CBM18,GH19
+At2g43660;CBM43
+At2g43670;CBM43
+At2g43860;GH28
+At2g43870;GH28
+At2g43880;GH28
+At2g43890;GH28
+At2g44460 (Bglu28);GH1
+At2g44470 (Bglu29);GH1
+At2g44480 (Bglu17);GH1
+"At2g44490 (pathogen resistance;Pen2;Bglu26)";GH1
+AT2G44500;GT106
+At2g44660;GT57
+At2g45220/F4L23.27;CE8
+At2g45830;GT90
+At2g45840;GT90
+"At2g45880 (BAM7;BMY4)";GH14
+At2g46480/F13A10.1 (Gaut2);GT8
+AT2G46570 (Lac6);AA1
+At2g46930;CE13
+At2g47030/F14M4.14 (PME4);CE8
+At2g47180/T08I13.2 (galactinol synthase AtGolS1);GT8
+At2g47280/T08I13.12;CE8
+At2g47550/T30B22.15;CE8
+At3g01040 (Gaut13);GT8
+At3g01270;PL1
+AT3G01510 (Lsf1);CBM48
+At3g01620;GT17
+At3g02100/F1C9.11;GT1
+"At3g02230/F14P3.12 (Rgp1;Rgp)";GT75
+At3g02350/F11A12.4 (Gaut9);GT8
+"At3g03640 (β-glucosidase;Gluc;Bglu25)";GH1
+At3g03650;GT47
+At3g03690;GT14
+AT3G03810;GT106
+At3g04010;GH17,CBM43
+"At3g04240/T6K12.14 (SECRET AGENT;Sec;protein O-linked N-acetylglucosaminyltransferase)";GT41
+At3g05610/F18C1.12;CE8
+At3g05620/F18C1.11;CE8
+At3g05820;GH100
+At3g05910;CE13
+At3g06260/F28L1.20;GT8
+At3g06440 (GALT3);GT31
+At3g06770;GH28
+At3g06830/F3E22.3;CE8
+At3g07010;PL1
+"At3g07020/F17A9.17 (UDP-Glc: sterol glucosyltransferase;Sgt;Ugt80A2)";GT1
+"At3g07160/T1B9.18 (CalS9;Gsl10)";GT48
+At3g07320;GH17,CBM43
+At3g07330/F21O3.4;GT2
+AT3G07380 (fragment);GT92
+At3g07620;GT47
+At3g07820;GH28
+At3g07830;GH28
+At3g07840;GH28
+At3g07850 (exopolygalacturonase-2);GH28
+AT3G07900;GT106
+At3g07970 (QRT2);GH28
+AT3G08550 (Kob1);GTnc
+At3g08900/reversibly glycosylated polypeptide-3 (RGP);GT75
+At3g09020;GT32
+AT3G09220 (Lac7);AA1
+At3g09410;CE13
+At3g09410;CE13
+At3g09540;PL1
+At3g10320/F14P13.8;GT61
+At3g10630;GT4
+At3g10710/T7M13.21;CE8
+At3g10720;CE8
+At3g10890 (AtMan3);GH5
+At3g10900 (AtMan4);GH5
+At3g11340 (F11B9.23 or F24K9.1);GT1
+At3g11420;GT31
+"At3g11540/F24K9.29 (SPINDLY;Spy;gibberellin signal transduction protein)";GT41
+"At3g11670 (digalactosyldiacylglycerol synthase;Dgd1)";GT4
+"At3g12500 (chitinase B;ChiB;Pr3) (basic)";CBM18,GH19
+At3g13560;GH17,CBM43
+At3g13784 (AtcwINV5);GH32
+At3g14040 (polygalacturonase);GH28
+At3g14300/MLN21.9 (AtPME26);CE8
+"At3g14570/MIE1.7 (CalS8;Gsl04)";GT48
+AT3G14780 (fragment);GT48
+At3g14960;GT31
+At3g15350;GT14
+At3g15720;GH28
+At3g15800/MSJ11.20;GH17
+At3g15940/MVC8.8;GT4
+At3g16850;GH28
+"At3g16920 (Ctl2;AtCTL2;CTL1-like)";GH19
+At3g17060/K14A17.13;CE8
+At3g18070 (Bglu43);GH1
+At3g18170;GT61
+At3g18180/MRC8.18;GT61
+At3g19280 (core α-1,3-fucosyltransferase FucTA);GT10
+At3g19620/MMB12.9;GH3
+AT3G21190;GT106
+At3g21310;GTnc
+At3g21370 (Bglu19);GH1
+At3g21760/MSD21_7;GT1
+At3g21790/MSD21.10;GT1
+At3g22250/MMP21.3;GT1
+At3g23640;GH31
+At3g23730;GH16
+At3g23770;GH17,CBM43
+At3g24040;GT14
+At3g24130/MUJ8.3;CE8
+At3g24180;GH116
+At3g24230;PL1
+At3g24330;GH17,CBM43
+At3g24670;PL1
+At3g25050;GH16
+"At3g25140/MJL12.8 (QUASIMODO1;Qua1;AtQUA1;Gaut8)";GT8
+At3g26130;GH5
+At3g26140;GH5
+AT3G26370;GT106
+At3g26380;GH27
+AT3G26440;GTnc
+AT3G26445 (fragment);GT17
+At3g26610;GH28
+At3g27330;GTnc
+At3g27400;PL1
+AT3G27470;GTnc
+At3g27540;GT17
+At3g27980;CE8
+At3g28250;CBM43
+At3g28340/MZF16.15;GT8
+At3g29320/MUO10_2;GT35
+At3g29630/MTO24.16;GT1
+AT3G30300;GT106
+At3g30540 (AtManP) (probable fragment);GH5
+AT3G42155 (fragment);GH9
+At3g42180;GT47
+At3g42950;GH28
+At3g43190/F7K15_40 (Sus4);GT4
+At3g43270/F7K15_120;CE8
+"At3g45100/T14D3.40 (SETH2;PIG-A)";GT4
+At3g45400;GT47
+At3g45940 (AtXyl2);GH31
+At3g46570/F12A12.90;GH17
+At3g46650/F12A12.170;GT1
+At3g46680 (F12A12.200 or T6H20.290);GT1
+At3g46700/T6H20.270;GT1
+At3g47000;GH3
+At3g47010;GH3
+At3g47040;GH3
+At3g47050/F13I12.100;GH3
+At3g47400/T21L8.150;CE8
+At3g47540;GH19
+At3g48580;GH16
+At3g48820;GT29
+At3g48950;GH28
+At3g48980;GT90
+At3g49220/F2K15.80;CE8
+At3g49880 (AtGH43A);GH43
+At3g50760/T3A5.140 or F18B3.40;GT8
+At3g52060;GTnc
+"At3g52600 (invertase;AtcwInv2)";GH32
+At3g53010;CE6
+At3g53150/T4D2.80;GT1
+At3g53190;PL1
+At3g53950 / F5k20_250 (GLOX);AA5
+AT3G54100;GT106
+At3g54440/T14E10_10;GH2
+At3g54920 (PMR6);PL1
+At3g55140;PL1
+At3g55430;GH17,CBM43
+At3g55700 (UGT76F2);GT1
+At3g55710/F1I16_120;GT1
+At3g55780/F1I16_190;GH17
+"At3g55830/F27K19_10 (Epc1;AtEPC1)";GT64
+At3g56000/F27K19_180;GT2
+At3g56310;GH27
+AT3G56750;GTnc
+At3g57200;GTnc
+At3g57270/F28O9.120;GH17
+At3g57380/F28O9.230;GT61
+At3g57420;GTnc
+AT3G57620;AA5
+At3g57790;GH28
+At3g58100;CBM43
+At3g58790/T20N10_140 (Gaut15);GT8
+At3g59010/F17J16_60;CE8
+"At3g59100/F17J16_150 (CalS6;Gsl11)";GT48
+At3g59850;GH28
+At3g60120 (Bglu27);GH1
+"At3g60130 (Yls1;Bglu16)";GH1
+"At3g60140 (Srg2;Din2;Bglu30)";GH1
+At3g60730/T4C21_140;CE8
+AT3G61010 (fragment);GH85
+At3g61270;GT90
+At3g61280;GT90
+At3g61290;GT90
+At3g61490;GH28
+At3g61810/F15G16.200;GH17
+At3g62060;CE13
+At3g62110;GH28
+At3g62170/T17J13.130;CE8
+At3g62660/F26K9_90;GT8
+At3g62710;GH3
+"At3g62740 (Bglu7;AtBGLU7)";GH1
+"At3g62750 (Bglu8;AtBGLU8)";GH1
+At4g00190/F6N15.23 (AtPME38);CE8
+At4g00300;GT31
+AT4G01040;GHnc
+AT4G01210;GTnc
+At4g01700;GH19
+At4g01890;GH28
+At4g01970;GH36
+At4g02130/T10M13.14;GT8
+At4g02280/T2H3.8 (Sus3);GT4
+At4g02300/T2H3.6;CE8
+At4g02320/T14P8.1;CE8
+At4g03210 (Xth9);GH16
+At4g03340;GT14
+At4g03930/T24M8.6;CE8
+At4g04970/T32N4.8 (CalS11);GT48
+At4g05430;CBM43
+At4g07960/F1K3.3;GT2
+At4g08160;CBM22,CBM22,GH10
+At4g08810;GTnc
+At4g09090;CBM43
+At4g09500;GT1
+At4g09510;GH100
+AT4G09630;GTnc
+At4g10060/T5L19.190;GH116
+At4g10120/F28M11.40;GT4
+At4g11350;GT31
+AT4G11650 (Osm34);GH152
+At4g12700;GTnc
+At4g12840;GTnc
+At4g13080;GH16
+At4g13090;GH16
+At4g13210;PL1
+At4g13410/T9E8.150;GT2
+At4g13600;CBM43
+At4g13710;PL1
+At4g13760;GH28
+At4g13990 (GT14);GT47
+At4g14080 (A6 anther-specific protein);GH17,CBM43
+At4g14130 (xyloglucan endotransferase XTR7);GH16
+At4g15240;GT31
+At4g15260/dl3675w;GT1
+At4g15270 (fragment);GT1
+At4g15290;GT2
+At4g15320;GT2
+At4g15970;GT77
+At4g15980/dl4030c;CE8
+At4g16165;CBM43
+At4g16360 (Kinb2);CBM48
+At4g16600/dl4325w;GT8
+AT4G16650;GT106
+At4g16745;GT47
+At4g17180;GH17,CBM43
+At4g17430;GTnc
+At4g17770;GT20
+At4g18180;GH28
+At4g18230 + At4g16710;GT1,GT1
+At4g18340/T9A21.190;GH17
+AT4G18530;GTnc
+At4g18990;GH16
+At4g19410;CE13
+At4g19420;CE13
+At4g19460/F24J7.20;GT4
+At4g19720;GH18
+At4g19730;GH18
+At4g19740;GH18
+At4g19750;GH18
+At4g19760;GH18
+At4g19770 (fragment);GH18
+At4g19800;GH18
+At4g19820;GH18
+At4g19900;GT32
+At4g19970;GT77,GT77
+At4g21760 (Bglu47);GH1
+At4g22080;PL1
+At4g22090;PL1
+"At4g22100 (Bglu3;AtBGLU3)";GH1
+At4g22580 (GT19);GT47
+At4g23490;GT31
+At4g23500;GH28
+At4g23820;GH28
+At4g23990;GT2
+At4g24000/T19F6.18;GT2
+At4g24010/T32A16.180;GT2
+AT4G24180 (Tlp1);GH152
+At4g24430;PL4
+"At4g24450 (Gwd2;AtGwd2/PWD)";CBM45,CBM45
+At4g24530;GT106
+At4g24780 (A10);PL1
+At4g25810 (xyloglucan endotransferase XTR6);GH16
+At4g25820 (xyloglucan endotransferase XTR9);GH16
+At4g25870;GTnc
+"At4g26250/T25K17.60 (GolS6;AtGolS6)";GT8
+At4g26830 (probable fragment);GH17,CBM43
+At4g26940;GT31
+AT4G27270;AA6
+At4g27480;GT14
+At4g27550;GT20
+At4g27560 (UGT79B2);GT1
+At4g27570/T29A15.60 (UGT79B3);GT1
+"At4g27820 (Bglu9;AtBGLU9)";GH1
+"AT4g27830 (Bglu10;AtBGLU10)";GH1
+At4g28320 (AtMan5);GH5
+At4g28850;GH16
+At4g29360;GH17,CBM43
+At4g30060;GTnc
+At4g30270 (xyloglucan endotransferase Meri-5);GH16
+At4g30280 (Xth-18);GH16
+At4g30290 (Xth-19);GH16
+At4g31140;GH17,CBM43
+At4g31350;GTnc
+At4g31350;GTnc
+At4g31590;GT2
+At4g32120 (HPGT2);GT31
+At4g32290;GTnc
+At4g32370;GH28
+AT4G32375 (possible fragment);GH28
+At4g32380;GH28
+"At4g32410 (cellulose-synthase A1;CesA1;Rsw1)";GT2
+At4g32790;GT47
+At4g33220/F4I10_150 (AtPME44);CE8
+At4g33230/F4I10.160;CE8
+At4g33440;GH28
+At4g33810;CBM22,GH10
+At4g33820;CBM22,GH10
+At4g33830;CBM22,GH10
+At4g33840;CBM22,GH10
+At4g33850 (fragment);CBM22,GH10
+At4g33860;CBM22,GH10
+At4g34130 (2,5-DHBA- and 2,4-DHBA-β-glucosyltransferase);GT1
+At4g34215;CE6
+At4g34480/T4L20.60;GH17
+At4g34860;GH100
+At4g35010 (Bgal11);GH35
+At4g35670;GH28
+AT4G36000;GH152
+AT4G36000;GH152
+AT4G36010;GH152
+AT4G36750;AA6
+At4g37420;GTnc
+At4g37690/F19F18.180 (AtGT6);GT34
+At4g37800;GH16
+At4g37950;PL4
+At4g38030;PL4
+At4g38040;GT47
+At4g38190/F20D10.310;GT2
+"At4g38240 (β-1,2-N-acetylglucosaminyltransferase I;GlcNAcT-I)";GT13
+At4g38270/F22I13.40 (Gaut3);GT8
+At4g38300 (fragment);GH10
+At4g38310 (fragment);GT34
+AT4G38390;GT106
+AT4G38500;GTnc
+At4g38590 (Bgal14);GH35
+At4g38650;CBM22,GH10
+AT4G38660;GH152
+AT4G38670;GH152
+"At4g39350 (cellulose synthase A2;CesA2)";GT2
+AT4G39830;AA1
+AT5G01040 (Lac8);AA1
+AT5G01050;AA1
+AT5G01100;GT106
+AT5G01190 (Lac10);AA1
+At5g01220/F7J8.200 (UDP-sulfoquinovose: diacylglycerol α-sulfoquinovosyltransferase SQD2);GT4
+At5g01250;GT32
+At5g01260/F7J8.240;CBM20
+At5g01930 (AtMan6);GH5
+AT5G02140;GH152
+AT5G03260 (Lac11);AA1
+AT5G03420;CBM48
+At5g03490 (3,4-DHBA- and 2,5-DHBA-β-glucosyltransferase UGT89A2);GT1
+At5g03770 (AtKDTA);GT30
+At5g03795;GT47
+At5g04310;PL1
+AT5G04480;GTnc
+At5g04500/T32M21_100;GT64
+At5g04885;GH3
+At5g04960/MUG13.18;CE8
+At5g04970;CE8
+"At5g05170 (cellulose synthase A3;CesA3;Cev1;Rsw5)";GT2
+"At5g05860/MJJ3.28 (cytokinin glucosyltransferase; UGT76C2)";GT1
+"At5g05870/K18J17.2 (cytokinin glucosyltransferase; UGT76C1)";GT1
+At5g05890/K18J17.4;GT1
+At5g05900/K18J17.5;GT1
+AT5G07130 (Lac13);AA1
+At5g07410/T2I1_120;CE8
+At5g07420/T2I1_130;CE8
+At5g07430/T2I1_140;CE8
+At5g08000;CBM43
+At5g08370;GH27
+At5g08380;GH27
+At5g09280 (fragment);PL1
+AT5G09360 (Lac14);AA1
+AT5G09700 (fragment);GH3
+At5g09760/F17I14_50 or MTH16.23;CE8
+AT5G09870;GT2
+At5g10560/F12B17_90;GH3
+At5g11110/T5K6_100;GT4
+At5g11130;GT47
+At5g11610;GT47
+At5g11730;GTnc
+"At5g11920 (6&1-FEH;AtcwINV6)";GH32
+AT5G12260;GTnc
+At5g12460;GT31
+At5g12890/T24H18_60;GT1
+AT5G12950;GH146
+AT5G12960;GH146
+At5g13870 (xyloglucan endotransferase EXGT-A4);GH16
+At5g13980;GH38
+At5g14480;GT17
+At5g14550;GTnc
+At5g14650;GH28
+At5g14850/T9L3_150;GT22
+At5g14860/T9L3_160;GT1
+At5g15110;PL1
+At5g15470/T20K14_80 (Gaut14);GT8
+At5g15650/F14F8_30;GT75
+At5g15870;GH81
+AT5G16170;GTnc
+At5g16190;GT2
+At5g16510 (Rgp2);GT75
+"At5g16580 (Bglu2;AtBGLU2) (fragment)";GH1
+At5g16700;GH5
+At5g16890;GT47
+At5g17040/F2K13_190;GT1
+At5g17200;GH28
+At5g17500;GH5
+At5g18220;GH17,CBM43
+"At5g18670 (BAM9;BMY3)";GH14
+At5g18990;CE8
+AT5G19580;AA5
+At5g19670;GT47
+At5g19690;GT66
+At5g19730;CE8
+At5g20250 (DIN10);GH36
+At5g20260;GT47
+At5g20280/F5O24_170;GT4
+At5g20330 (bg4);GH17
+At5g20340 (bg5);GH17
+At5g20390;GH17
+At5g20560;GH17
+At5g20710 (Bgal7);GH35
+At5g20860;CE8
+At5g20870;GH17,CBM43
+At5g20940;GH3
+At5g20950;GH3
+AT5G21100;AA1
+AT5G21105;AA1
+At5g21170 (KINB1);CBM48
+At5g22070;GTnc
+At5g22130;GT50
+At5g22940 (F8H);GT47
+At5g23790/MRO11.17;GT8
+At5g23850;GT90
+At5g23870;CE13
+At5g24318;GH17,CBM43
+At5g24540 (Bglu31);GH1
+At5g24550 (Bglu32);GH1
+AT5G24620;GH152
+At5g24750;GT1
+At5g25310;GT47
+At5g25330;GTnc
+At5g25820;GT47
+At5g25970;GTnc
+"At5g26120 (α-L-arabinofuranosidase;Asd2)";GH51
+"At5g26570 (phosphoglucan, water dikinase) (Pwd1;Pwd;Gwd3;AtGWD3)";CBM20
+At5g26670;CE13
+At5g26810/A_IG002P16.5 (fragment);CE8
+At5g27530;GH28
+At5g27870;CE8
+At5g28510 (Bglu24);GH1
+At5g29958;GT8
+At5g34940 (GUS3);GH79
+AT5G35570;GT106
+At5g35740;CBM43
+"At5g36870/F5H8.14 (CalS4;Gsl09)";GT48
+At5g36890 (Bglu42);GH1
+At5g37000;GT47
+At5g37180/MJG14.25 (Sus5);GT4
+At5g37950/K18L3.15 (probable fragment);GT1
+At5g38010/F16F17.1;GT1
+At5g38040/F16F17.6;GT1
+AT5G38280 (Pr5K);GH152
+At5g38460;GT57
+AT5G39790;CBM48
+At5g39910;GH28
+AT5G40020;GH152
+At5g40390;GH36
+At5g40720;GTnc
+At5g40900;GT77
+At5g41250 (GT20);GT47
+At5g41460;GT31
+At5g41870;GH28
+At5g42260 (Bglu12);GH1
+AT5G42660;GTnc
+At5g42720/MJB21.9;GH17
+At5g44640 (Bglu13);GH1
+At5g44820;GT77
+At5g44830;GH28
+At5g44840;GH28
+At5g44930;GT47
+At5g45280;CE13
+"At5g45300 (BAM8;BMY2)";GH14
+At5g46220;GTnc
+At5g47780/MCA23.10 (Gaut4);GT8
+At5g48070 (Xth-20);GH16
+AT5G48100 (Tt10);AA1
+At5g48140;GH28
+AT5G48190 (fragment);GT92
+"At5g48375 (TGG3;Bglu39) (fragment; pseudogene)";GH1
+At5g48900;PL1
+At5g49180/K21P3.5;CE8
+"At5g49190/K21P3.6 (sucrose synthase;Sus2)";GT4
+At5g49215;GH28
+At5g49690/K2I5_5;GT1
+At5g49900;GH116
+At5g50420/MXI22.14;GTnc
+At5g50750/MFB16.15;GT75
+At5g51490/K17N15.4;CE8
+At5g51500/K17N15.5;CE8
+At5g53340 (HPGT1);GT31
+At5g53370/K19E1.17;CE8
+At5g53600;CBM43
+At5g53610;CBM43
+At5g53990/K19P17.16;GT1
+At5g54010/K19P17.18;GT1
+At5g54060/MJP23.2 (UGT79B1);GT1
+AT5G54500 (Fqr1);AA6
+At5g54570 (Bglu41);GH1
+"At5g54690/K5F14.3 (Irx8;Gaut12)";GT8
+At5g55180;GH17,CBM43
+At5g55700 (BAM4);GH14
+At5g55720;PL1
+At5g56590;GH17,CBM43
+At5g57270;GTnc
+At5g57500;GT31
+At5g57530;GH16
+At5g57540;GH16
+At5g57550 (xyloglucan endotransferase XTR3);GH16
+At5g57700;GH33
+At5g58090;GH17,CBM43
+At5g58480;GH17,CBM43
+AT5G58800;AA6
+AT5G58910 (Lac16);AA1
+At5g59070/K18B18.7;GT4
+AT5G60020 (Lac17);AA1
+AT5G60700;GTnc
+At5g61130;CBM43
+At5g61250 (GUS1);GH79
+At5g61680/K11J9.21;CE8
+"AT5g61840 (AtGUT1;Irx10-L)";GT47
+At5g62220 (GT18);GT47
+At5g62620 (GALT6);GT31
+At5g63180;PL1
+At5g63230;CBM43
+At5g63240;CBM43
+At5g63250;CBM43
+AT5G63390;GT106
+AT5G64600;GT106
+At5g64640/MUB3.16;CE8
+"At5g64740/MVP7_7 (cellulose synthase CesA6;PROCUSTE1;Prc1;Prc-1;Ixr2)";GT2
+At5g64790;GH17,CBM43
+AT5G65470;GT106
+At5g65550;GT1
+At5g65685;GT5
+At5g65730;GH16
+At5g66150/K2A18.23;GH38
+At5g66460 (AtMan7);GH5
+At5g67460;GH17,CBM43
+At5g67540 (AtGH43B);GH43
+AT9943_LOCUS11867;GH31
+AT9943_LOCUS11867;GH31
+AT9943_LOCUS11867;GH31
+AT9943_LOCUS11867;GH31
+AT9943_LOCUS14513;GHnc
+AT9943_LOCUS14513;GHnc
+A_IG002N01.5 (fragment);GH36
+"branching-enzyme 1 (Be1;AtSBEIII;At3g20440)";CBM48,CBM48,GH13
+"branching-enzyme 2 (BE2;Sbe2-1;Sbe2.1;At2g36390)";CBM48,GH13
+"branching-enzyme 3 (BE3;sbe2-2;sbe2.2;At5g03650)";CBM48,GH13
+"callose synthase (CalS12;Gsl5;At4g03550/F9H3.18/T5L23.4)";GT48
+"callose synthase (CalS5;Gsl2;Lap1;At2g13680)";GT48
+"callose synthase 1 (CalS1;Gsl6;At1g05570)";GT48
+"callose synthase 3 (CalS3;Gsl12;At5g13000)";GT48
+"callose synthase 7 (CalS7;Gsl07;At1g06490) (phloem-specific)";GT48
+"cell-wall invertase 1 (AtBFruct1;Fruct1;AtcwINV1;At3g13790)";GH32
+"cellulose synthase A4 (Irx5;At5g44030)";GT2
+"cellulose synthase A7 (Irx3;At5g17420)";GT2
+"cellulose synthase A8 (Irx1;At4g18780)";GT2
+"chitin elicitor receptor kinase 1 (CERK1;AT1G51940)";CBM50
+"chitinase (ChiC;AtChiC;At4g19810)";GH18
+"chitinase A (ChiB1;At5g24090) (acidic)";GH18
+"chitinase IV1 (ChitIV1;AtChitIV1;At2g43570)";CBM18,GH19
+"chitinase IV3 (ChitIV3;AtChitIV3;At2g43590)";CBM18,GH19
+"chitinase IV4 (ChitIV4;AtChitIV4;At2g43610)";CBM18,GH19
+"chitinase IV5 (ChitIV5;CHIV;CHI-IV;AtChitIV5;AtChitIV;AtEP3;At3g54420)";CBM18,GH19
+"chloroplastic isoamylase 3 (Isa3;AtISA3;At4g09020)";CBM48,GH13
+"core β-1,2-xylosyltransferase (XylT;AtXYLT;At5g55500)";GT61
+"digalactosyldiacylglycerol synthase (Dgd2;DGD2;At4g00550)";GT4
+"Dol-P-Glc; Glc2Man9GlcNAc2-PP-Dol α-1,2-glucosyltransferase (Alg10;At5g02410;T1E22_170)";GT59
+"Dol-P-Man: α-1,3-mannosyltransferase (Alg3;At2g47760)";GT58
+endo-β-1,2-glucanase 2 (At1g19940);GH9
+"endo-β-1,3-glucanase (BG;BG3;PR3;AtBG3;At3g57240)";GH17
+"endo-β-1,3-glucanase / ABA-β-glucosidase (BG2;Bgl2;PR2;PR-2;AtBG2;At3g57260)";GH17
+"endo-β-1,4-glucanase 1 / cellulase 2 (Cel2;AtCEL2;EGase;At1g02800)";GH9
+endo-β-1,4-glucanase 10 (At2g44540);GH9
+"endo-β-1,4-glucanase 10 (Eg10;At1g75680)";GH9
+"endo-β-1,4-glucanase 11 (Eg11;At2g32990)";GH9
+endo-β-1,4-glucanase 13 (At2g44550);GH9
+endo-β-1,4-glucanase 14 (At2g44560);GH9
+"endo-β-1,4-glucanase 15 (Eg15;At2g44570)";GH9
+endo-β-1,4-glucanase 16 (At3g43860);GH9
+"endo-β-1,4-glucanase 17 (Eg17;At4g02290)";GH9
+endo-β-1,4-glucanase 18 (At4g09740);GH9
+"endo-β-1,4-glucanase 19 (Eg19;At4g11050)";GH9,CBM49
+endo-β-1,4-glucanase 20 (At4g23560/F9D16.30);GH9
+"endo-β-1,4-glucanase 21 (Kor3;At4g24260)";GH9
+endo-β-1,4-glucanase 22 (At4g38990);GH9
+endo-β-1,4-glucanase 23 (At4g39000);GH9
+"endo-β-1,4-glucanase 24 (Eg24;At4g39010)";GH9
+"endo-β-1,4-glucanase 25 (Kor1;Tsd1;KORRIGAN1;AtKOR;At5g49720)";GH9
+"endo-β-1,4-glucanase 4 (Eg4;At1g23210)";GH9
+"endo-β-1,4-glucanase 5 (Eg5;AtCel6;At1g48930)";GH9,CBM49
+"endo-β-1,4-glucanase 6 (Eg6;At1g64390)";GH9,CBM49
+"endo-β-1,4-glucanase 7 (Kor2;At1g65610/F5I14.14)";GH9
+"endo-β-1,4-glucanase 8 / cellulase 1 (Cel1;AtCEL1;EGase;At1g70710)";GH9
+"endo-β-1,4-glucanase 9 / cellulase 3 (Cel3;AtCEL3;At1g71380)";GH9
+"endo-β-1,4-mannanase (AtMan5-1;AtMan1;At1g02310)";GH5
+"endo-β-N-acetylglucosaminidase (ENGase;At5g05460)";GH85
+"endo-β-N-acetylglucosaminidase (ENGase;AtENGase85B);At3g11040)";GH85
+"endo-1,4-glucanase 3 / cellulase 5 (Cel5;AtCEL5;At1g22880)";GH9
+endo-polygalacturonase (At1g48100);GH28
+"ER β-glucosidase (Bglu22;At1g66280)";GH1
+"ER β-glucosidase (Psr3.2;Bglu21;At1g66270)";GH1
+"ER β-glucosidase (Pyk10;Bglu23;Psr3.1;At3g09260)";GH1
+"ER β-glucosidase / ABA-β-glucosidase (BG1;Bgl1;Bglu18;AtBG1;At1g52400)";GH1
+"extensin β-1,2-L-arabinosyltransferase (Rra3;RRA3;At1g19360)";GT77
+"extensin β-1,2/3-L-arabinosyltransferase (Xeg113;XEG113;At2g35610)";GT77
+"extensin-β-L-arabinoside α-L-arabinosyltranferase (ExAD; At3g57630)";GT47
+F14I3.7 (fragment);CE8
+"flavonol bisglycoside β-glucosidase (Bglu15;At2g44450)";GH1
+"galactan synthase 1 (GalS1;AtGALS1;At2g33570)";GT92
+"galactan synthase 2 (GalS2;AtGALS2;At5g44670)";GT92
+"galactan synthase 3 (GalS3;AtGALS3;At4g20170)";GT92
+"GDP-L-Fuc: [arabinogalactan] arabinosyl α-1,2-L-fucosyltransferase (Fut4;AtFUT4;At2g15390)";GT37
+"GDP-L-Fuc: [arabinogalactan] arabinosyl α-1,2-L-fucosyltransferase (Fut6;AtFUT6;At1g14080)";GT37
+"GDP-Man: [glucomannan] β-mannosyltransferase (CslD5;At1g02730)";GT2
+"glucuronoxylan glycosyltransferase (I14H;Irx14L;Irx14-L;At5g67230)";GT43
+"glucuronoxylan glycosyltransferase (Irx14;At4g36890)";GT43
+"homogalacturonan α-1,4-galacturonosyltransferase (LGT1;JS36;Gaut1;AtGAUT1;At3g61130/T20K12.30)";GT8
+"indole-3-acetate β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At4g15550; UGT75D1)";GT1
+invertase (At5g22510) (plastidic);GH100
+"invertase (AtBFruct4;Fruct4;AtbFruct4;At1g12240)";GH32
+"invertase 4 (Atfruct6;AtcwINV4;At2g36190)";GH32
+"jasmonic acid glucosyltransferase (AtUGT74D1;At2g31750)";GT1
+"MGD2; At1g08660";GT29
+"monogalactosyldiacylglycerol synthase 1 (Mgd1;At4g31780)";GT28
+"monogalactosyldiacylglycerol synthase 2 (Mgd2;Mgd;At5g20410)";GT28
+"monogalactosyldiacylglycerol synthase 3 / C (Mgd3;MgdC;At2g11810)";GT28
+"monolignol β-glucosidase (Bglu45;At1g61810)";GH1
+"monolignol β-glucosidase (Bglu46;At1g61820)";GH1
+"myrosinase (TGG1;Bglu38;At5g26000)";GH1
+"myrosinase (TGG4;Bglu34;At1g47600)";GH1
+"myrosinase (TGG5;Bglu35;At1g51470)";GH1
+"myrosinase 2 (TGG2;Bglu37;At5g25980) (leaf)";GH1
+"N-glycan β-1,3-galactosyltransferase (GALT1;At1g26810)";GT31
+ORF;CBM43
+ORF;CBM43
+"osmotin 34 (AtOsm34;At3g04720/F7O18.21) (Hevein-like)";CBM18
+"pectin methylesterase (AtPME31;At3g29090/MXE2.4)";CE8
+"pectin methylesterase (PME3;AtPME3;At3g14310)";CE8
+"pectin methylesterase (Pme41;AtPME41;AtPMEPCRB;At4g02330)";CE8
+"pectin methylesterase (Pme5; Vgd1;At2g47040/F14M4.13)";CE8
+"pectin methylesterase (PME5;At5g47500)";CE8
+"pectin methylesterase (PPME1;AtPPME1;At1g69940/T17F3.3)";CE8
+"pectin methylesterase (QRT1;QUARTET1;At5g55590)";CE8
+"peptidyl serine α-galactosyltransferase (Sgt1;AtSGT1;At3g01720)";GT96,GT96
+"phosphoglucan phosphatase (Sex4;STARCH-EXCESS4;At3g52180;ATPTPKIS1;Dsp4)";CBM48
+"polygalacturonase (ADPG1;At3g57510)";GH28
+"pullulanase / isoamylase (Lda;AtPU1;AtLDA;LDA1;At5g04360)";CBM48,GH13
+"rhamnogalacturonan lyase (Myst6;AtMYST6;At2g22620)";PL4
+"rhamnogalacturonan-I rhamnosyltransferase (RRT1; AT5G15740)";GT106
+"rhamnogalacturonan-I rhamnosyltransferase (RRT2; At3g02250)";GT106
+"rhamnogalacturonan-I rhamnosyltransferase (RRT3; At2g03280)";GT106
+"rhamnogalacturonan-I rhamnosyltransferase (RRT4; At1g14020)";GT106
+"rhamnogalacturonan-II α-1,3-xylosyltransferase (RGXT3;At1g56550)";GT77
+"starch synthase I (Ss1;At5g24300) (soluble)";GT5
+"starch synthase II (Ss2;At3g01180)";GT5
+"starch synthase III (Ss3;SsIII;At1g11720 (chloroplast)";CBM53,CBM53,CBM53,GT5
+"starch synthase IV (SsIV;At4g18240)";GT5
+"sucrose synthase 1 (Sus1;AtSus1;At5g20830)";GT4
+T16E15.4 (UGT5);GT1
+"trans-zeatin (cytokinin) O-glucosyltransferase (UGT85A1;At1g22400/F12K8.26)";GT1
+"trehalase (AtTre1;At4g24040/T19F6.30) (plasma membrane-bound)";GH37
+"UDP-β-L-Ara: α-L-arabinosyltransferase (AtUGT78D3;At5g17030)";GT1
+"UDP-β-L-Araf:hydroxyproline β-L-arabinofuranosyltransferase (HPAT1; At5g25265)";GT95
+"UDP-β-L-Araf:hydroxyproline β-L-arabinofuranosyltransferase (HPAT2; At2g25260)";GT95
+UDP-β-L-Araf:hydroxyproline β-L-arabinofuranosyltransferase (HPAT3At5g13500);GT95
+"UDP-β-L-Rha: flavonol α-7-O-L-rhamnosyltransferase (At1g06000; UGT89C1)";GT1
+"UDP-Gal: β-1,3-galactan/β-1,6-galactan β-1,6-galactosyltransferase (AtGALT29A;At1g08280)";GT29
+"UDP-Gal: [arabinogalactan-protein] hydroxyproline-β-O-galactosyltransferase (GalT2;AtGALT2;At4g21060)";GT31
+"UDP-Gal: [arabinogalactan] β-1,6-galactan β-1,6-galactosyltransferase (AtGALT31A;At1g32930)";GT31
+"UDP-Glc glucosyltransferase (UGT85A2;At1g22360/T16E15.3)";GT1
+"UDP-Glc zeatin O-β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At2g36750; UGT73C1)";GT1
+"UDP-Glc: 4-hydroxybenzoate 4-O-β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At4g15480; UGT84A1)";GT1
+"UDP-Glc: coniferyl alcohol β-glucosyltransferase (UGT72E2;At5g66690/MSN2.8)";GT1
+"UDP-Glc: coniferyl alcohol β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At4g34131; UGT73B3)";GT1
+"UDP-Glc: coniferyl aldehyde / sinapyl aldehyde β-glucosyltransferase; UDP-Glc:phenol β-glucosyltransferase (At3g50740; UGT72E1)";GT1
+"UDP-Glc: flavonoid O7-β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At4g34138; AtUGT73B1)";GT1
+"UDP-Glc: indole-3-carboxylic acid-, coniferyl alcohol-, flavonoid 7-O-glucosyltransferase (At4g34135; UGT73B2)";GT1
+"UDP-Glc: indole-3-carboxylic acid-, sinapoyl-alcohol-, sinapate glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At3g21560; UGT84A2)";GT1
+"UDP-Glc: indole-3-carboxylic acid-, sinapoyl-alcohol-glucosyltransferase (UGT71C3;At1g07260/F10K1.3)";GT1
+"UDP-Glc: indole-3-carboxylic acid-, synapate-, 4-coumarate glucosyltransferase (At4g15490; UGT84A3)";GT1
+"UDP-Glc: quercetin 3-O-glucosyltransferase / 3,4-DHBA-/4-HBA-4-O-β-glucosyltransferase (At5g17050; UGT78D2)";GT1
+"UDP-Glc: salicylic acid / anthranilate / BA-β-glucosyltransferase (At2g43820; UGT74F2) (salicylic acid glucose ester-forming)";GT1
+"UDP-Glc: salicylic acid/ indole-3-carboxylic acid / coniferyl alcohol / 2-HBA / BA-β-glucosyltransferase (At2g43840; UGT74F1)";GT1
+"UDP-Glc: scopoletin / 3,4-DHBA- / 3-HBA-3-O-β-glucosyltransferase (UGT71C1;At2g29750)";GT1
+"UDP-Glc: sinapoyl-alcohol-, 2,5-DHBA-, 3,4-DHBA-β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At4g01070; UGT72B1)";GT1
+"UDP-Glc:indole-3-acetate β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At2g23260; UGT84B1)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At1g01420; UGT72B3)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At1g05560; UGT75B1)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At1g07240; UGT71C5)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At1g22370; UGT85A5)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At1g78270; UGT85A4)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At2g15480; UGT73B5)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At2g18570; UGT72D1)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At2g23250; UGT84B2)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At2g29730; UGT71D1)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At2g36770; UGT73C4)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At2g36780; UGT73C3)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At3g16520; UGT88A1)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At3g21780; UGT71B6) (abscisic acid β-glucosyltransferase)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At3g21800; UGT71B8)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At3g46660; UGT76E12)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At3g46670; UGT76E11)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At3g46690; UGT76E4)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At3g46720; UGT76E5)";GT1
+UDP-Glc:phenol β-glucosyltransferase (At3g53160UGT73C7);GT1
+"UDP-Glc:phenol β-glucosyltransferase (At4g15280; UGT71B5)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At5g05880; UGT76C4)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At5g59580; UGT76E1)";GT1
+"UDP-Glc:phenol β-glucosyltransferase (At5g59590; UGT76E2)";GT1
+"UDP-Glc:phenol β-glucosyltransferase; UDP-Glc: sinapyl alcohol β-glucosyltransferase (At5g26310; UGT72E3)";GT1
+"UDP-Glc:sinapate 1-O-β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At4g15500; UGT84A4)";GT1
+"UDP-Glc:thiohydroximate S-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At1g24100; UGT74B1)";GT1
+"UDP-GlcA: inositol phosphorylceramide α-glucuronosyltransferase (IPUT1;At5g18480)";GT8
+"UDP-GlcA: xylan α-glucuronyltransferase (Gux1;PGSIP1;At3g18660)";GT8
+"UDP-GlcA: xylan α-glucuronyltransferase (Gux2;At4g33330)";GT8
+"UDP-GlcA: [arabinogalactan] β-1,3-/β-1,6-galactan β-1,6-glucuronosyltransferase (AtGlcAT14C;At2g37585)";GT14
+"UDP-GlcA: [arabinogalactan] β-1,6-/β-1,3-galactan β-1,6-glucuronosyltransferase (AtGLCAT14A;At5g39990)";GT14
+"UDP-GlcA: [arabinogalactan] β-1,6-/β-1,3-galactan β-1,6-glucuronosyltransferase (AtGlcAT14B;At5g15050)";GT14
+"UDP-glucose:caffeoyl-3-O-β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At4g36770; UGT72C1) )";GT1
+"UDP-L-rhamnose: flavonol-3-O-rhamnosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At1g30530; AtUGT78D1)";GT1
+"UDP-Xyl: (L-fucose) RGII α-xylosyltransferase (RGXT2;MPG4;At4g01220)";GT77
+"UDP-Xyl: rhamnogalacturonan-II α-1,3-xylosyltransferase (RGXT1;AtRGXT1;At4g01770)";GT77
+"UDP-Xyl: rhamnogalacturonan-II α-1,3-xylosyltransferase (RGXT2;AtRGXT2;At4g01750)";GT77
+"UDP-Xyl: xylan β-1,4-xylosyltransferase (Irx9;At2g37090)";GT43
+"UDP-Xyl: xylan β-1,4-xylosyltransferase (I9H;Irx9L;Irx9-L;At1g27600)";GT43
+"UDP-Xyl: xylogalacturonan β-1,3-xylosyltransferase (Xgd1;AtXGD1;At5g33290)";GT47
+"UDP-Xyl: xyloglucan α-1,6-xylosyltransferase (XT1;AtXT1;At3g62720)";GT34
+"UDP-Xyl: xyloglucan α-1,6-xylosyltransferase (XT2;AtXT2;At4g02500)";GT34
+"UDP-Xyl: xyloglucan α-1,6-xylosyltransferase (XXT3;At5g07720)";GT34
+"UDP-Xyl: xyloglucan α-1,6-xylosyltransferase (XXT4;At1g18690)";GT34
+"UDP-Xyl: xyloglucan α-1,6-xylosyltransferase (XXT5;At1g74380)";GT34
+"xyloglucan α-1,2-fucosyltransferase 1 (Fut1;Ft1;AtFUT1;Mur2;At2g03220)";GT37
+"xyloglucan β-1,2-galactosyltransferase (Mur3;AtMUR3;Kam1;At2g20370)";GT47
+"xyloglucan β-1,4-glucan synthase (At3g28180;MIG10.8)";GT2
+"xyloglucan β-galactosidase (Bgal10;AtBGAL10;At5g63810)";GH35
+"xyloglucan endotransferase (Xth22;Tch4;At5g57560)";GH16
+"xyloglucanase (XTH31;At3g44990)";GH16
+"xyloglucanase (XTH32;At2g36870)";GH16
+"zeatin O-β-glucosyltransferase / UDP-Glc:phenol β-glucosyltransferase (At2g36790; UGT73C6)";GT1
+"zeatin O-β-glucosyltransferase 3; UDP-Glc:phenol β-glucosyltransferase (At2g36800; UGT73C5)";GT1
